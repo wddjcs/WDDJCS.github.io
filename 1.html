@@ -1,0 +1,2215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>积分系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E293B',    // 深蓝灰
+                        secondary: '#334155',  // 深灰蓝
+                        accent: '#F59E0B',     // 琥珀色
+                        neutral: '#DC2626',    // 红色
+                        'base-100': '#0F172A', // 深蓝黑
+                        negative: '#EF4444',
+                        positive: '#10B981',   // 绿色
+                        'dark-blue': '#1E40AF', // 深蓝
+                        'light-blue': '#3B82F6', // 亮蓝
+                        'dark-pink': '#DB2777', // 深粉
+                        'light-pink': '#EC4899', // 亮粉
+                        'dark-purple': '#7C3AED', // 深紫
+                        'light-purple': '#8B5CF6', // 亮紫
+                        'dark-orange': '#EA580C', // 深橙
+                        'light-orange': '#F97316', // 亮橙
+                        'gold': '#D4AF37',     // 金色 - 最高等级
+                        // 扩展等级颜色
+                        'level-1': '#A9A9A9',   // 青铜色
+                        'level-2': '#C0C0C0',   // 银色
+                        'level-3': '#FFD700',   // 金色
+                        'level-4': '#00CED1',   // 青色
+                        'level-5': '#9370DB',   // 紫色
+                        'level-6': '#FF6347',   // 番茄红
+                        'level-7': '#20B2AA',   // 浅海蓝
+                        'level-8': '#FF69B4',   // 热粉色
+                        'level-9': '#32CD32',   //  lime绿色
+                        'level-10': '#1E90FF',  // 道奇蓝
+                        'level-11': '#8A2BE2',  // 蓝紫色
+                        'level-12': '#FF4500',  // 橙红色
+                        'level-13': '#228B22',  // 森林绿
+                        'level-14': '#4682B4',  // 钢蓝色
+                        'level-15': '#CD5C5C',  // 印度红
+                        'level-16': '#4B0082',  // 靛蓝色
+                        'level-17': '#DAA520',  // 金色
+                        'level-18': '#8B4513',  // 马鞍棕
+                        'level-19': '#9932CC',  // 暗紫色
+                        'level-20': '#008000',  // 绿色
+                        'level-21': '#0000CD',  // 中蓝色
+                        'level-22': '#800080',  // 紫色
+                        'level-23': '#800000',  // 深红色
+                        'level-24': '#00008B',  // 暗蓝色
+                        'level-25': '#008B8B',  // 暗青色
+                        'level-26': '#B8860B',  // 深金色
+                        'level-27': '#A0522D',  // 沙棕色
+                        'level-28': '#2F4F4F',  // 深石板灰
+                        'level-29': '#00CED1',  // 中青色
+                        'level-30': '#9400D3',  // 暗紫罗兰色
+                        'level-31': '#FF1493',  // 深粉色
+                        'level-32': '#00BFFF',  // 天蓝色
+                        'level-33': '#6B8E23',  // 橄榄绿
+                        'level-34': '#FFA500',  // 橙色
+                        'level-35': '#7CFC00',  // 草绿色
+                        'level-36': '#FFC0CB',  // 粉色
+                        'level-37': '#87CEEB',  // 天蓝色
+                        'level-38': '#87CEFA',  // 浅天蓝色
+                        'level-39': '#DDA0DD',  //  plum色
+                        'level-40': '#B0C4DE',  //  亮钢蓝
+                        'level-41': '#FFFFE0',  //  浅黄色
+                        'level-42': '#F0E68C',  //  卡其色
+                        'level-43': '#E6E6FA',  //  淡紫色
+                        'level-44': '#FFF0F5',  //  淡粉色
+                        'level-45': '#7B68EE',  //  中紫色
+                        'level-46': '#6495ED',  //  玉米蓝
+                        'level-47': '#DC143C',  //  深红色
+                        'level-48': '#FF6347',  //  番茄红
+                        'level-49': '#FFD700',  //  金色
+                        'level-50': '#D4AF37'   // 金色 - 50级（最高级）
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-5px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-shadow {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            }
+            .btn-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:scale-105;
+            }
+            .scale-hover {
+                @apply transition-transform duration-300 hover:scale-105;
+            }
+            .custom-scrollbar::-webkit-scrollbar {
+                width: 4px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-track {
+                background: #1E293B;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+                background: #475569;
+                border-radius: 4px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                background: #64748B;
+            }
+            .page {
+                display: none;
+                opacity: 0;
+                animation: fadeIn 0.5s ease-in-out forwards;
+            }
+            .page.active {
+                display: block;
+                opacity: 1;
+            }
+            .point-change {
+                transition: all 0.5s ease-out;
+            }
+            .avatar-upload {
+                position: relative;
+                overflow: hidden;
+                display: inline-block;
+            }
+            .avatar-upload input[type="file"] {
+                position: absolute;
+                left: 0;
+                top: 0;
+                opacity: 0;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+            }
+            .confirmation-modal {
+                display: none;
+            }
+            .confirmation-modal.active {
+                display: flex;
+            }
+            .negative-points {
+                color: #EF4444;
+            }
+            .quick-action-badge {
+                @apply absolute -top-2 -right-2 bg-neutral text-white text-xs rounded-full w-5 h-5 flex items-center justify-center;
+            }
+            .bg-add-low {
+                @apply bg-light-blue;
+            }
+            .bg-deduct-low {
+                @apply bg-positive;
+            }
+            .bg-add-medium {
+                @apply bg-light-pink;
+            }
+            .bg-deduct-medium {
+                @apply bg-neutral;
+            }
+            .bg-add-high {
+                @apply bg-light-purple;
+            }
+            .bg-deduct-high {
+                @apply bg-light-orange;
+            }
+            body {
+                @apply text-gray-200;
+            }
+            input, select {
+                @apply bg-gray-800 text-gray-200 border-gray-700;
+            }
+            .avatar-selected {
+                @apply ring-2 ring-white;
+            }
+            .benefit-card {
+                @apply bg-gray-800 rounded-lg p-4 mb-3 card-shadow hover:shadow-lg transition-all;
+            }
+            .benefit-count {
+                @apply bg-accent text-white text-xs px-2 py-1 rounded-full;
+            }
+            .dropdown {
+                @apply absolute right-0 mt-1 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50 hidden;
+                transform-origin: top right;
+                animation: fadeIn 0.2s ease-out;
+            }
+            .dropdown-item {
+                @apply flex items-center p-2 hover:bg-gray-700 cursor-pointer;
+            }
+            .level-badge {
+                @apply text-xs px-1.5 py-0.5 rounded-full ml-2;
+            }
+            .progress-bar {
+                @apply h-2 bg-gray-700 rounded-full overflow-hidden;
+            }
+            .progress-fill {
+                @apply h-full bg-accent;
+            }
+            .season-countdown-badge {
+                @apply bg-accent text-white text-xs px-2 py-0.5 rounded-lg mr-1 inline-block;
+            }
+            .crown-icon {
+                @apply text-gold animate-pulse-slow;
+            }
+            @media (max-width: 640px) {
+                .member-card-grid {
+                    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                }
+                .quick-actions-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                .chart-container {
+                    height: 250px;
+                }
+                .benefit-actions {
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+                .benefit-actions button {
+                    width: 100%;
+                }
+                .footer-buttons {
+                    flex-direction: row;
+                    gap: 0.5rem;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+                .footer-buttons button {
+                    width: auto;
+                    min-width: 120px;
+                }
+                .dropdown {
+                    width: 100%;
+                    right: auto;
+                    left: 0;
+                }
+                .member-name-container {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                .member-name {
+                    margin-bottom: 0.25rem;
+                }
+                .level-badge {
+                    margin-left: 0;
+                }
+                /* 新增移动端优化样式 */
+                .member-card {
+                    min-width: 100%;
+                }
+                .quick-action-btn {
+                    padding: 0.5rem;
+                    font-size: 0.875rem;
+                }
+                .custom-action-btn {
+                    padding: 0.5rem;
+                    font-size: 0.875rem;
+                }
+                .modal-content {
+                    width: 90%;
+                    margin: 0 auto;
+                }
+                .footer-buttons button {
+                    padding: 0.5rem 1rem;
+                    margin: 0.25rem;
+                }
+            }
+        }
+    </style>
+</head>
+<body class="bg-base-100 min-h-screen flex flex-col">
+    <!-- 顶部导航 -->
+    <header class="bg-primary text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa fa-star text-accent text-xl"></i>
+                <h1 class="text-xl font-bold">积分系统</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="season-btn" class="text-white hover:text-accent transform hover:scale-110 transition-transform flex items-center">
+                    <span id="season-countdown-badge" class="season-countdown-badge hidden"></span>
+                    <i class="fa fa-calendar text-lg"></i>
+                </button>
+                <button id="leaderboard-btn" class="text-white hover:text-accent transform hover:scale-110 transition-transform">
+                    <i class="fa fa-trophy text-lg"></i>
+                </button>
+                <button id="benefits-btn" class="text-white hover:text-accent transform hover:scale-110 transition-transform">
+                    <i class="fa fa-gift text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="flex-grow container mx-auto px-3 py-6">
+        <!-- 主页内容 -->
+        <div id="home-page" class="page active">
+            <!-- 总积分显示 -->
+            <div class="mb-6 text-center">
+                <h2 class="text-xl font-bold mb-2">当前总积分</h2>
+                <div class="inline-flex items-center bg-gray-800 rounded-xl p-4 card-shadow scale-hover hover:shadow-lg transition-all">
+                    <i class="fa fa-trophy text-accent text-3xl mr-3"></i>
+                    <div>
+                        <p class="text-xs text-gray-400">全家共获得</p>
+                        <p id="total-points" class="text-3xl font-bold point-change">0</p>
+                        <p class="text-xs text-gray-400">积分</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 添加成员按钮 -->
+            <div class="mb-6 text-center">
+                <button id="add-member-btn" class="bg-primary text-white py-2 px-4 rounded-lg btn-hover flex items-center mx-auto">
+                    <i class="fa fa-plus-circle mr-2"></i>添加成员
+                </button>
+            </div>
+
+            <!-- 家庭成员列表 -->
+            <div id="members-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 member-card-grid">
+                <!-- 成员卡片将通过JS动态添加 -->
+            </div>
+
+            <!-- 积分记录 -->
+            <div class="bg-gray-800 rounded-xl p-4 card-shadow mb-8 hover:shadow-lg transition-all">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold flex items-center">
+                        <i class="fa fa-history text-accent mr-2"></i>积分记录
+                    </h2>
+                    <button id="clear-history-btn" class="text-xs text-gray-400 hover:text-white">
+                        <i class="fa fa-trash-o mr-1"></i>清空记录
+                    </button>
+                </div>
+                <div id="history-container" class="max-h-64 overflow-y-auto custom-scrollbar space-y-3">
+                    <p class="text-center text-gray-500 text-sm italic">暂无记录</p>
+                </div>
+            </div>
+
+            <!-- 奖励管理 -->
+            <div class="bg-gray-800 rounded-xl p-4 card-shadow mb-8 hover:shadow-lg transition-all">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold flex items-center">
+                        <i class="fa fa-gift text-accent mr-2"></i>奖励兑换
+                    </h2>
+                    <button id="add-reward-btn" class="text-xs text-gray-400 hover:text-white">
+                        <i class="fa fa-plus-circle mr-1"></i>添加奖励
+                    </button>
+                </div>
+                <div id="rewards-container" class="space-y-3">
+                    <p class="text-center text-gray-500 text-sm italic">暂无奖励</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 权益页面 -->
+        <div id="benefits-page" class="page">
+            <div class="bg-gray-800 rounded-xl p-4 card-shadow mb-8 hover:shadow-lg transition-all">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold flex items-center">
+                        <i class="fa fa-gift text-accent mr-2"></i>权益管理
+                    </h2>
+                    <button id="add-benefit-btn" class="text-xs text-gray-400 hover:text-white">
+                        <i class="fa fa-plus-circle mr-1"></i>添加权益
+                    </button>
+                </div>
+                <div id="benefits-container" class="space-y-3">
+                    <p class="text-center text-gray-500 text-sm italic">暂无权益</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-6">
+                <button id="back-from-benefits-btn" class="bg-primary text-white py-2 px-6 rounded-lg btn-hover">
+                    <i class="fa fa-arrow-left mr-2"></i>返回主页
+                </button>
+            </div>
+        </div>
+
+        <!-- 排行榜页面 -->
+        <div id="leaderboard-page" class="page">
+            <div class="bg-gray-800 rounded-xl p-4 card-shadow mb-8 hover:shadow-lg transition-all">
+                <h2 class="text-lg font-bold mb-4 flex items-center">
+                    <i class="fa fa-trophy text-accent mr-2"></i>积分排行榜
+                </h2>
+                <div id="leaderboard-container" class="space-y-3">
+                    <!-- 排行榜内容将通过JS动态添加 -->
+                </div>
+            </div>
+            
+            <div class="text-center mt-6">
+                <button id="back-from-leaderboard-btn" class="bg-primary text-white py-2 px-6 rounded-lg btn-hover">
+                    <i class="fa fa-arrow-left mr-2"></i>返回主页
+                </button>
+            </div>
+        </div>
+
+        <!-- 赛季页面 -->
+        <div id="season-page" class="page">
+            <div class="bg-gray-800 rounded-xl p-4 card-shadow mb-8 hover:shadow-lg transition-all">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold flex items-center">
+                        <i class="fa fa-calendar text-accent mr-2"></i>赛季管理
+                    </h2>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-md font-semibold mb-3">当前赛季设置</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm mb-1">赛季持续天数</label>
+                            <div class="flex">
+                                <input type="number" id="season-duration" min="1" max="365" value="30" 
+                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                                <span class="ml-2 self-center">天</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">赛季结束倒计时</label>
+                            <div id="season-countdown" class="bg-gray-700 p-2 rounded-lg text-center font-medium">
+                                未开始
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-center">
+                        <button id="start-season-btn" class="bg-primary text-white py-2 px-6 rounded-lg btn-hover mr-3">
+                            <i class="fa fa-play mr-2"></i>开始新赛季
+                        </button>
+                        <button id="end-season-btn" class="bg-neutral text-white py-2 px-6 rounded-lg btn-hover">
+                            <i class="fa fa-stop mr-2"></i>立即结束赛季
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-md font-semibold mb-3">本赛季排行榜</h3>
+                    <div id="season-leaderboard-container" class="space-y-3">
+                        <p class="text-center text-gray-500 text-sm italic">暂无赛季数据</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-6">
+                <button id="back-from-season-btn" class="bg-primary text-white py-2 px-6 rounded-lg btn-hover">
+                    <i class="fa fa-arrow-left mr-2"></i>返回主页
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-primary text-white py-3 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <div class="footer-buttons flex justify-center space-x-4">
+                <button id="quick-actions-manage-btn" class="text-xs bg-secondary text-white py-1 px-3 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fa fa-bolt mr-1"></i>管理快速操作
+                </button>
+                <button id="reset-btn" class="text-xs bg-secondary text-white py-1 px-3 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fa fa-refresh mr-1"></i>恢复初始状态
+                </button>
+            </div>
+            <p class="text-xs mt-2">© 2025 积分系统 | 制作：侯得屋</p>
+        </div>
+    </footer>
+
+    <!-- 添加成员模态框 -->
+    <div id="add-member-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-lg font-bold mb-4">添加家庭成员</h3>
+            <input type="text" id="new-member-name" placeholder="输入成员名称" class="w-full px-4 py-2 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary">
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-add-member" class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700">取消</button>
+                <button id="confirm-add-member" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加奖励模态框 -->
+    <div id="add-reward-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-lg font-bold mb-4">添加奖励</h3>
+            <input type="text" id="new-reward-name" placeholder="输入奖励名称" class="w-full px-4 py-2 border rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary">
+            <input type="number" id="new-reward-points" placeholder="输入所需积分" class="w-full px-4 py-2 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary">
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-add-reward" class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700">取消</button>
+                <button id="confirm-add-reward" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加权益模态框 -->
+    <div id="add-benefit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-lg font-bold mb-4">添加权益</h3>
+            <input type="text" id="new-benefit-name" placeholder="输入权益名称" class="w-full px-4 py-2 border rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary">
+            <input type="number" id="new-benefit-count" placeholder="输入权益次数" class="w-full px-4 py-2 border rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary">
+            
+            <div class="mb-4">
+                <label class="block text-sm mb-2">选择权益成员</label>
+                <div id="benefit-members-container" class="space-y-2 max-h-40 overflow-y-auto custom-scrollbar">
+                    <!-- 成员选择项将通过JS动态添加 -->
+                </div>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-add-benefit" class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700">取消</button>
+                <button id="confirm-add-benefit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自定义积分操作模态框 -->
+    <div id="custom-points-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-lg font-bold mb-4">自定义积分操作</h3>
+            <div class="mb-3">
+                <label class="block text-sm mb-1">操作类型</label>
+                <select id="custom-points-type" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="add">加分</option>
+                    <option value="deduct">扣分</option>
+                </select>
+            </div>
+            <input type="number" id="custom-points-value" placeholder="输入积分值" class="w-full px-4 py-2 border rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-primary">
+            <input type="text" id="custom-points-reason" placeholder="输入操作原因" class="w-full px-4 py-2 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary">
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-custom-points" class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700">取消</button>
+                <button id="confirm-custom-points" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 头像上传模态框 -->
+    <div id="avatar-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-lg font-bold mb-4">设置头像</h3>
+            <div class="flex flex-col items-center mb-4">
+                <div class="w-32 h-32 rounded-full bg-gray-700 mb-4 overflow-hidden flex items-center justify-center">
+                    <img id="avatar-preview" src="" alt="头像预览" class="w-full h-full object-cover hidden">
+                    <i id="avatar-default" class="fa fa-user text-4xl text-gray-500 flex items-center justify-center w-full h-full"></i>
+                </div>
+                <div class="flex space-x-3 mb-4">
+                    <label class="avatar-upload bg-primary text-white py-2 px-4 rounded-lg cursor-pointer hover:bg-accent transition-colors">
+                        <i class="fa fa-upload mr-2"></i>上传照片
+                        <input type="file" id="avatar-input" accept="image/*" class="hidden">
+                    </label>
+                    <button id="default-avatar-btn" class="bg-secondary text-white py-2 px-4 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors">
+                        <i class="fa fa-user-circle mr-2"></i>默认头像
+                    </button>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-avatar" class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700">取消</button>
+                <button id="confirm-avatar" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 默认头像选择模态框 -->
+    <div id="default-avatar-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-lg font-bold mb-4">选择默认头像</h3>
+            <div class="grid grid-cols-4 gap-4 mb-6">
+                <div class="avatar-option bg-blue-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="blue">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="green">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-yellow-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="yellow">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-red-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="red">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-purple-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="purple">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-pink-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="pink">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-indigo-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="indigo">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-gray-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="gray">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-teal-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="teal">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-cyan-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="cyan">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-orange-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="orange">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-amber-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="amber">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-lime-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="lime">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-emerald-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="emerald">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-violet-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="violet">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+                <div class="avatar-option bg-fuchsia-500 text-white w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" data-color="fuchsia">
+                    <i class="fa fa-user text-2xl"></i>
+                    <i class="fa fa-check absolute hidden avatar-selected-icon"></i>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-default-avatar" class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700">取消</button>
+                <button id="confirm-default-avatar" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 快速操作管理模态框 -->
+    <div id="quick-actions-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-lg font-bold mb-4">管理快速操作</h3>
+            <div id="quick-actions-container" class="space-y-3 mb-4">
+                <!-- 快速操作项将通过JS动态添加 -->
+            </div>
+            <div class="flex justify-between items-center mb-4">
+                <button id="add-quick-action-btn" class="text-sm bg-secondary text-white py-1 px-3 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fa fa-plus mr-1"></i>添加快速操作
+                </button>
+                <span class="text-xs text-gray-400">最多可添加6条快速操作</span>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-quick-actions" class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700">取消</button>
+                <button id="save-quick-actions" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加快速操作模态框 -->
+    <div id="add-quick-action-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-lg font-bold mb-4">添加快速操作</h3>
+            <div class="mb-3">
+                <label class="block text-sm mb-1">操作类型</label>
+                <select id="quick-action-type" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="add">加分</option>
+                    <option value="deduct">扣分</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="block text-sm mb-1">积分值</label>
+                <input type="number" id="quick-action-points" placeholder="输入积分值" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm mb-1">显示标签 (可选)</label>
+                <input type="text" id="quick-action-label" placeholder="例如: +5" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-add-quick-action" class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700">取消</button>
+                <button id="confirm-add-quick-action" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 选择兑换成员模态框 -->
+    <div id="select-redeem-member-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-lg font-bold mb-4">选择兑换成员</h3>
+            <p class="mb-2 text-sm">请选择要扣除积分的成员：</p>
+            <div id="redeem-members-container" class="space-y-2 mb-4">
+                <!-- 成员选择项将通过JS动态添加 -->
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-redeem-member" class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700">取消</button>
+                <button id="confirm-redeem-member" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 确认对话框 -->
+    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 confirmation-modal">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-lg font-bold mb-4" id="confirmation-title">确认操作</h3>
+            <p class="mb-6" id="confirmation-message">您确定要执行此操作吗？</p>
+            <div class="flex justify-end space-x-3">
+                <button id="confirmation-cancel" class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700">取消</button>
+                <button id="confirmation-confirm" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 消息提示框 -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-primary text-white px-4 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 flex items-center">
+        <i id="toast-icon" class="fa fa-check-circle mr-2"></i>
+        <span id="toast-message">操作成功</span>
+    </div>
+
+    <script>
+        // 初始化数据
+        let appData = {
+            members: [],
+            rewards: [],
+            benefits: [],
+            history: [],
+            nextMemberId: 1,
+            nextBenefitId: 1,
+            isFirstTime: true,
+            quickActions: [
+                { points: 5, label: "+5", type: "add" },
+                { points: 10, label: "+10", type: "add" },
+                { points: 5, label: "-5", type: "deduct" },
+                { points: 10, label: "-10", type: "deduct" }
+            ],
+            defaultAvatarColors: [
+                'blue', 'green', 'yellow', 'red',
+                'purple', 'pink', 'indigo', 'gray',
+                'teal', 'cyan', 'orange', 'amber',
+                'lime', 'emerald', 'violet', 'fuchsia'
+            ],
+            lastDecayDate: null,
+            // 赛季相关数据
+            season: {
+                isActive: false,
+                startTime: null,
+                endTime: null,
+                durationDays: 30,
+                leaderboard: [] // 存储本赛季经验排行 {memberId, experience}
+            }
+        };
+
+        // 等级配置 (从青铜开始的50个等级，最高级50级使用金色)
+        const levelConfig = [
+            { minExp: 0, level: 1, color: 'bg-level-1', name: '青铜' },
+            { minExp: 50, level: 2, color: 'bg-level-2', name: '白银' },
+            { minExp: 70, level: 3, color: 'bg-level-3', name: '黄金' },
+            { minExp: 140, level: 4, color: 'bg-level-4', name: '赤铜' },
+            { minExp: 180, level: 5, color: 'bg-level-5', name: '玄铁' },
+            { minExp: 250, level: 6, color: 'bg-level-6', name: '精钢' },
+            { minExp: 350, level: 7, color: 'bg-level-7', name: '黑铁' },
+            { minExp: 440, level: 8, color: 'bg-level-8', name: '青铜卫士' },
+            { minExp: 550, level: 9, color: 'bg-level-9', name: '白银卫士' },
+            { minExp: 630, level: 10, color: 'bg-level-10', name: '黄金卫士' },
+            { minExp: 750, level: 11, color: 'bg-level-11', name: '初级武士' },
+            { minExp: 880, level: 12, color: 'bg-level-12', name: '中级武士' },
+            { minExp: 1020, level: 13, color: 'bg-level-13', name: '高级武士' },
+            { minExp: 1170, level: 14, color: 'bg-level-14', name: '青铜武士' },
+            { minExp: 1330, level: 15, color: 'bg-level-15', name: '白银武士' },
+            { minExp: 1500, level: 16, color: 'bg-level-16', name: '黄金武士' },
+            { minExp: 1680, level: 17, color: 'bg-level-17', name: '初级骑士' },
+            { minExp: 1870, level: 18, color: 'bg-level-18', name: '中级骑士' },
+            { minExp: 2070, level: 19, color: 'bg-level-19', name: '高级骑士' },
+            { minExp: 2280, level: 20, color: 'bg-level-20', name: '青铜骑士' },
+            { minExp: 2500, level: 21, color: 'bg-level-21', name: '白银骑士' },
+            { minExp: 2730, level: 22, color: 'bg-level-22', name: '黄金骑士' },
+            { minExp: 2970, level: 23, color: 'bg-level-23', name: '勇士' },
+            { minExp: 3220, level: 24, color: 'bg-level-24', name: '先锋' },
+            { minExp: 3480, level: 25, color: 'bg-level-25', name: '精英' },
+            { minExp: 3750, level: 26, color: 'bg-level-26', name: '专家' },
+            { minExp: 4030, level: 27, color: 'bg-level-27', name: '大师' },
+            { minExp: 4320, level: 28, color: 'bg-level-28', name: '宗师' },
+            { minExp: 4620, level: 29, color: 'bg-level-29', name: '王者' },
+            { minExp: 4930, level: 30, color: 'bg-level-30', name: '传奇' },
+            { minExp: 5250, level: 31, color: 'bg-level-31', name: '星辰' },
+            { minExp: 5580, level: 32, color: 'bg-level-32', name: '月亮' },
+            { minExp: 5920, level: 33, color: 'bg-level-33', name: '太阳' },
+            { minExp: 6270, level: 34, color: 'bg-level-34', name: '彗星' },
+            { minExp: 6630, level: 35, color: 'bg-level-35', name: '流星' },
+            { minExp: 7000, level: 36, color: 'bg-level-36', name: '行星' },
+            { minExp: 7380, level: 37, color: 'bg-level-37', name: '恒星' },
+            { minExp: 7770, level: 38, color: 'bg-level-38', name: '星云' },
+            { minExp: 8170, level: 39, color: 'bg-level-39', name: '星系' },
+            { minExp: 8580, level: 40, color: 'bg-level-40', name: '宇宙' },
+            { minExp: 9000, level: 41, color: 'bg-level-41', name: '守护者' },
+            { minExp: 9430, level: 42, color: 'bg-level-42', name: '捍卫者' },
+            { minExp: 9870, level: 43, color: 'bg-level-43', name: '守望者' },
+            { minExp: 10320, level: 44, color: 'bg-level-44', name: '裁决者' },
+            { minExp: 10780, level: 45, color: 'bg-level-45', name: '审判者' },
+            { minExp: 11250, level: 46, color: 'bg-level-46', name: '征服者' },
+            { minExp: 11730, level: 47, color: 'bg-level-47', name: '统治者' },
+            { minExp: 12220, level: 48, color: 'bg-level-48', name: '缔造者' },
+            { minExp: 12720, level: 49, color: 'bg-level-49', name: '创世者' },
+            { minExp: 13230, level: 50, color: 'bg-level-50', name: '永恒至尊' } // 最高等级，金色
+        ];
+
+        // 当前编辑头像的成员ID
+        let currentAvatarMemberId = null;
+        // 确认对话框回调函数
+        let confirmationCallback = null;
+        // 当前选择的默认头像颜色
+        let selectedAvatarColor = null;
+        // 当前兑换的奖励
+        let currentRedeemReward = null;
+        // 当前操作的成员ID（用于积分操作）
+        let currentMemberId = null;
+        // 赛季倒计时定时器
+        let seasonCountdownTimer = null;
+        // 当前编辑的快速操作索引
+        let currentQuickActionIndex = null;
+
+        // 从本地存储加载数据
+        function loadData() {
+            const savedData = localStorage.getItem('familyPointsData');
+            if (savedData) {
+                try {
+                    const parsedData = JSON.parse(savedData);
+                    // 检查是否是第一次使用
+                    if (parsedData.isFirstTime === undefined) {
+                        // 第一次使用，初始化数据
+                        initializeDefaultData();
+                    } else {
+                        appData = parsedData;
+                        appData.isFirstTime = false;
+                        
+                        // 确保成员有seasonExperience字段
+                        appData.members.forEach(member => {
+                            if (member.seasonExperience === undefined) {
+                                member.seasonExperience = 0;
+                            }
+                            if (member.experience === undefined) {
+                                member.experience = 0;
+                            }
+                        });
+                        
+                        // 初始化赛季排行榜
+                        if (!appData.season.leaderboard || appData.season.leaderboard.length === 0) {
+                            appData.season.leaderboard = appData.members.map(member => ({
+                                memberId: member.id,
+                                experience: member.seasonExperience
+                            }));
+                        }
+                    }
+                } catch (e) {
+                    console.error('Failed to parse saved data', e);
+                    initializeDefaultData();
+                }
+            } else {
+                initializeDefaultData();
+            }
+            renderAll();
+            
+            // 启动赛季倒计时
+            if (appData.season.isActive) {
+                startSeasonCountdown();
+            }
+        }
+
+        // 初始化默认数据
+        function initializeDefaultData() {
+            appData = {
+                members: [],
+                rewards: [],
+                benefits: [],
+                history: [],
+                nextMemberId: 1,
+                nextBenefitId: 1,
+                isFirstTime: false,
+                quickActions: [
+                    { points: 5, label: "+5", type: "add" },
+                    { points: 10, label: "+10", type: "add" },
+                    { points: 5, label: "-5", type: "deduct" },
+                    { points: 10, label: "-10", type: "deduct" }
+                ],
+                defaultAvatarColors: [
+                    'blue', 'green', 'yellow', 'red',
+                    'purple', 'pink', 'indigo', 'gray',
+                    'teal', 'cyan', 'orange', 'amber',
+                    'lime', 'emerald', 'violet', 'fuchsia'
+                ],
+                lastDecayDate: null,
+                season: {
+                    isActive: false,
+                    startTime: null,
+                    endTime: null,
+                    durationDays: 30,
+                    leaderboard: []
+                }
+            };
+            saveData();
+        }
+
+        // 保存数据到本地存储
+        function saveData() {
+            localStorage.setItem('familyPointsData', JSON.stringify(appData));
+        }
+
+        // 渲染所有内容
+        function renderAll() {
+            renderMembers();
+            renderTotalPoints();
+            renderHistory();
+            renderRewards();
+            renderBenefits();
+            renderLeaderboard();
+            renderSeasonLeaderboard();
+            renderSeasonCountdown();
+            renderBenefitMembers();
+            renderRedeemMembers();
+        }
+
+        // 渲染家庭成员
+        function renderMembers() {
+            const container = document.getElementById('members-container');
+            if (appData.members.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-500 text-sm italic col-span-full">暂无家庭成员，请添加成员</p>';
+                return;
+            }
+
+            // 找出等级最高的成员
+            let maxLevel = 0;
+            appData.members.forEach(member => {
+                const level = getLevelInfo(member.experience).level;
+                if (level > maxLevel) {
+                    maxLevel = level;
+                }
+            });
+            
+            container.innerHTML = '';
+            appData.members.forEach(member => {
+                const levelInfo = getLevelInfo(member.experience);
+                const nextLevelInfo = getNextLevelInfo(member.experience);
+                const progressPercent = nextLevelInfo ? 
+                    Math.min(100, Math.round((member.experience - levelInfo.minExp) / (nextLevelInfo.minExp - levelInfo.minExp) * 100)) : 
+                    100;
+                
+                // 检查是否是等级最高的成员
+                const isHighestLevel = levelInfo.level === maxLevel;
+
+                const memberCard = document.createElement('div');
+                memberCard.className = `bg-gray-800 rounded-xl p-4 card-shadow hover:shadow-lg transition-all relative overflow-hidden member-card`;
+                memberCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="relative">
+                            ${member.avatarUrl ? 
+                                `<img src="${member.avatarUrl}" alt="${member.name}" class="w-16 h-16 rounded-full object-cover">` : 
+                                `<div class="bg-${member.avatarColor || 'gray'}-500 w-16 h-16 rounded-full flex items-center justify-center">
+                                    <i class="fa fa-user text-2xl"></i>
+                                </div>`
+                            }
+                        </div>
+                        <div class="flex items-center">
+                            ${isHighestLevel ? '<i class="fa fa-crown crown-icon text-lg" title="等级最高"></i>' : ''}
+                            <button class="delete-member-btn text-gray-400 hover:text-white ml-2" data-id="${member.id}">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="member-name-container flex items-center justify-between mb-2">
+                        <h3 class="member-name font-bold">${member.name}</h3>
+                        <span class="level-badge ${levelInfo.color}">${levelInfo.name} Lv${levelInfo.level}</span>
+                    </div>
+                    
+                    <p class="text-sm text-gray-400 mb-2">积分: ${member.points}</p>
+                    
+                    <div class="mb-1 text-xs text-gray-400 flex justify-between">
+                        <span>等级进度</span>
+                        <span>${member.experience}/${nextLevelInfo ? nextLevelInfo.minExp : levelInfo.minExp}</span>
+                    </div>
+                    <div class="progress-bar mb-4">
+                        <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        ${appData.quickActions.slice(0, 6).map(action => `
+                            <button class="quick-action-btn ${action.type === 'add' ? 'bg-positive' : 'bg-negative'} 
+                                text-white py-1 rounded-lg text-sm flex items-center justify-center btn-hover"
+                                data-id="${member.id}" data-type="${action.type}" data-points="${action.points}">
+                                ${action.label}
+                            </button>
+                        `).join('')}
+                    </div>
+                    
+                    <button class="custom-action-btn w-full bg-primary text-white py-1 rounded-lg text-sm mt-1 flex items-center justify-center btn-hover"
+                        data-id="${member.id}">
+                        <i class="fa fa-cog mr-1"></i>自定义
+                    </button>
+                `;
+                container.appendChild(memberCard);
+            });
+
+            document.querySelectorAll('.quick-action-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const memberId = parseInt(this.getAttribute('data-id'));
+                    const type = this.getAttribute('data-type');
+                    const points = parseInt(this.getAttribute('data-points'));
+                    updatePoints(memberId, type, points, type === 'add' ? `获得${points}积分` : `扣除${points}积分`);
+                });
+            });
+
+            document.querySelectorAll('.custom-action-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentMemberId = parseInt(this.getAttribute('data-id'));
+                    document.getElementById('custom-points-modal').classList.remove('hidden');
+                    document.getElementById('custom-points-value').value = '';
+                    document.getElementById('custom-points-reason').value = '';
+                });
+            });
+
+            // 为删除按钮添加事件监听器
+            document.querySelectorAll('.delete-member-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 防止事件冒泡
+                    const memberId = parseInt(this.getAttribute('data-id'));
+                    const member = appData.members.find(m => m.id === memberId);
+                    if (member) {
+                        showConfirmation('删除成员', `确定要删除成员 "${member.name}" 吗？`, () => {
+                            deleteMember(memberId);
+                        });
+                    }
+                });
+            });
+        }
+
+        // 删除成员
+        function deleteMember(memberId) {
+            // 从成员数组中删除
+            appData.members = appData.members.filter(m => m.id !== memberId);
+            // 从赛季排行榜中删除
+            appData.season.leaderboard = appData.season.leaderboard.filter(item => item.memberId !== memberId);
+            
+            // 更新历史记录中的成员名字为"已删除成员"
+            appData.history.forEach(item => {
+                if (item.memberId === memberId) {
+                    item.memberName = "已删除成员";
+                }
+            });
+            
+            saveData();
+            renderAll();
+            showToast('成员已删除', 'success');
+        }
+
+        // 渲染快速操作管理界面
+        function renderQuickActions() {
+            const container = document.getElementById('quick-actions-container');
+            container.innerHTML = '';
+            
+            if (appData.quickActions.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-500 text-sm italic">暂无快速操作</p>';
+                return;
+            }
+            
+            appData.quickActions.forEach((action, index) => {
+                const actionItem = document.createElement('div');
+                actionItem.className = 'bg-gray-700 rounded-lg p-3 flex justify-between items-center';
+                actionItem.innerHTML = `
+                    <div>
+                        <span class="font-medium ${action.type === 'add' ? 'text-positive' : 'text-negative'}">
+                            ${action.label || (action.type === 'add' ? '+' : '') + action.points}
+                        </span>
+                        <p class="text-xs text-gray-400">${action.type === 'add' ? '加分' : '扣分'} ${action.points} 积分</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="edit-quick-action-btn text-gray-400 hover:text-white" data-index="${index}">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <button class="delete-quick-action-btn text-gray-400 hover:text-white" data-index="${index}">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(actionItem);
+            });
+            
+            // 添加事件监听器
+            document.querySelectorAll('.edit-quick-action-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    editQuickAction(index);
+                });
+            });
+            
+            document.querySelectorAll('.delete-quick-action-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    showConfirmation('删除快速操作', '确定要删除这个快速操作吗？', () => {
+                        deleteQuickAction(index);
+                    });
+                });
+            });
+        }
+
+        // 添加快速操作
+        function addQuickAction(type, points, label = null) {
+            if (appData.quickActions.length >= 6) {
+                showToast('最多只能添加6个快速操作', 'error');
+                return;
+            }
+            
+            const newAction = {
+                type: type,
+                points: parseInt(points),
+                label: label || (type === 'add' ? '+' : '') + points
+            };
+            
+            appData.quickActions.push(newAction);
+            saveData();
+            renderQuickActions();
+            renderMembers();
+            showToast('快速操作已添加', 'success');
+        }
+
+        // 编辑快速操作
+        function editQuickAction(index) {
+            if (index < 0 || index >= appData.quickActions.length) return;
+            
+            const action = appData.quickActions[index];
+            document.getElementById('quick-action-type').value = action.type;
+            document.getElementById('quick-action-points').value = action.points;
+            document.getElementById('quick-action-label').value = action.label.replace(/^[+-]/, '');
+            
+            currentQuickActionIndex = index;
+            document.getElementById('quick-actions-modal').classList.add('hidden');
+            document.getElementById('add-quick-action-modal').classList.remove('hidden');
+        }
+
+        // 更新快速操作
+        function updateQuickAction(index, type, points, label = null) {
+            if (index < 0 || index >= appData.quickActions.length) return;
+            
+            appData.quickActions[index] = {
+                type: type,
+                points: parseInt(points),
+                label: label || (type === 'add' ? '+' : '') + points
+            };
+            
+            saveData();
+            renderQuickActions();
+            renderMembers();
+            showToast('快速操作已更新', 'success');
+            
+            // 关闭添加模态框，重新打开管理模态框
+            document.getElementById('add-quick-action-modal').classList.add('hidden');
+            document.getElementById('quick-actions-modal').classList.remove('hidden');
+        }
+
+        // 删除快速操作
+        function deleteQuickAction(index) {
+            if (index < 0 || index >= appData.quickActions.length) return;
+            
+            appData.quickActions.splice(index, 1);
+            saveData();
+            renderQuickActions();
+            renderMembers();
+            showToast('快速操作已删除', 'success');
+        }
+
+        // 获取等级信息
+        function getLevelInfo(experience) {
+            for (let i = levelConfig.length - 1; i >= 0; i--) {
+                if (experience >= levelConfig[i].minExp) {
+                    return levelConfig[i];
+                }
+            }
+            return levelConfig[0];
+        }
+
+        // 获取下一级信息
+        function getNextLevelInfo(experience) {
+            for (let i = 0; i < levelConfig.length; i++) {
+                if (experience < levelConfig[i].minExp) {
+                    return levelConfig[i];
+                }
+            }
+            return null; // 已经是最高级
+        }
+
+        // 渲染总积分
+        function renderTotalPoints() {
+            const totalPoints = appData.members.reduce((sum, member) => sum + member.points, 0);
+            const totalPointsElement = document.getElementById('total-points');
+            totalPointsElement.textContent = totalPoints;
+            totalPointsElement.classList.add('scale-125');
+            setTimeout(() => {
+                totalPointsElement.classList.remove('scale-125');
+            }, 500);
+        }
+
+        // 渲染积分记录
+        function renderHistory() {
+            const container = document.getElementById('history-container');
+            if (appData.history.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-500 text-sm italic">暂无记录</p>';
+                return;
+            }
+
+            // 按时间排序，最新的在前
+            const sortedHistory = [...appData.history].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            container.innerHTML = '';
+            sortedHistory.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'bg-gray-700 rounded-lg p-3 text-sm';
+                historyItem.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="font-medium">${item.memberName}</span>
+                            <span class="${item.type === 'add' ? 'text-positive' : 'text-negative'}">
+                                ${item.type === 'add' ? '+' : ''}${item.points}积分
+                            </span>
+                            <p class="text-gray-400 mt-1">${item.reason}</p>
+                        </div>
+                        <span class="text-gray-500 text-xs">${formatDate(item.timestamp)}</span>
+                    </div>
+                `;
+                container.appendChild(historyItem);
+            });
+        }
+
+        // 格式化日期
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return `${date.getMonth() + 1}月${date.getDate()}日 ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+        }
+
+        // 渲染奖励
+        function renderRewards() {
+            const container = document.getElementById('rewards-container');
+            if (appData.rewards.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-500 text-sm italic">暂无奖励</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            appData.rewards.forEach(reward => {
+                const rewardItem = document.createElement('div');
+                rewardItem.className = 'bg-gray-700 rounded-lg p-3 flex justify-between items-center';
+                rewardItem.innerHTML = `
+                    <div>
+                        <h4 class="font-medium">${reward.name}</h4>
+                        <p class="text-sm text-gray-400">需要 ${reward.points} 积分</p>
+                    </div>
+                    <button class="redeem-reward-btn bg-accent text-white py-1 px-3 rounded-lg text-sm btn-hover"
+                        data-id="${reward.id}">
+                        兑换
+                    </button>
+                `;
+                container.appendChild(rewardItem);
+            });
+
+            // 添加事件监听器
+            document.querySelectorAll('.redeem-reward-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const rewardId = parseInt(this.getAttribute('data-id'));
+                    currentRedeemReward = appData.rewards.find(r => r.id === rewardId);
+                    renderRedeemMembers();
+                    document.getElementById('select-redeem-member-modal').classList.remove('hidden');
+                });
+            });
+        }
+
+        // 渲染权益
+        function renderBenefits() {
+            const container = document.getElementById('benefits-container');
+            if (appData.benefits.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-500 text-sm italic">暂无权益</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            appData.benefits.forEach(benefit => {
+                const benefitItem = document.createElement('div');
+                benefitItem.className = 'benefit-card';
+                benefitItem.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-medium">${benefit.name}</h4>
+                        <div class="flex space-x-2">
+                            <button class="edit-benefit-btn text-gray-400 hover:text-white" data-id="${benefit.id}">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="delete-benefit-btn text-gray-400 hover:text-white" data-id="${benefit.id}">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-2">总次数: ${benefit.totalCount} | 剩余次数: ${benefit.remainingCount}</p>
+                    <p class="text-sm text-gray-400 mb-3">适用成员: ${benefit.memberIds.map(id => {
+                        const member = appData.members.find(m => m.id === id);
+                        return member ? member.name : '未知成员';
+                    }).join(', ')}</p>
+                    <div class="benefit-actions flex space-x-2">
+                        <button class="use-benefit-btn bg-primary text-white py-1 px-3 rounded-lg text-sm btn-hover"
+                            data-id="${benefit.id}">
+                            使用权益
+                        </button>
+                        <button class="reset-benefit-btn bg-secondary text-white py-1 px-3 rounded-lg text-sm btn-hover"
+                            data-id="${benefit.id}">
+                            重置次数
+                        </button>
+                    </div>
+                `;
+                container.appendChild(benefitItem);
+            });
+
+            // 添加事件监听器
+            document.querySelectorAll('.delete-benefit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const benefitId = parseInt(this.getAttribute('data-id'));
+                    showConfirmation('删除权益', '确定要删除这个权益吗？', () => {
+                        deleteBenefit(benefitId);
+                    });
+                });
+            });
+
+            document.querySelectorAll('.use-benefit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const benefitId = parseInt(this.getAttribute('data-id'));
+                    useBenefit(benefitId);
+                });
+            });
+
+            document.querySelectorAll('.reset-benefit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const benefitId = parseInt(this.getAttribute('data-id'));
+                    resetBenefit(benefitId);
+                });
+            });
+
+            document.querySelectorAll('.edit-benefit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const benefitId = parseInt(this.getAttribute('data-id'));
+                    editBenefit(benefitId);
+                });
+            });
+        }
+
+        // 渲染排行榜
+        function renderLeaderboard() {
+            const container = document.getElementById('leaderboard-container');
+            if (appData.members.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-500 text-sm italic">暂无成员数据</p>';
+                return;
+            }
+
+            // 按积分排序
+            const sortedMembers = [...appData.members].sort((a, b) => b.points - a.points);
+            
+            container.innerHTML = '';
+            sortedMembers.forEach((member, index) => {
+                const levelInfo = getLevelInfo(member.experience);
+                const leaderboardItem = document.createElement('div');
+                leaderboardItem.className = `flex items-center p-3 rounded-lg ${index < 3 ? 'bg-gray-700' : 'bg-gray-800'}`;
+                leaderboardItem.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center font-bold mr-3 ${
+                        index === 0 ? 'bg-yellow-500' : index === 1 ? 'bg-gray-300 text-gray-800' : index === 2 ? 'bg-amber-700' : ''
+                    }">
+                        ${index + 1}
+                    </div>
+                    ${member.avatarUrl ? 
+                        `<img src="${member.avatarUrl}" alt="${member.name}" class="w-10 h-10 rounded-full object-cover mr-3">` : 
+                        `<div class="bg-${member.avatarColor || 'gray'}-500 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                            <i class="fa fa-user"></i>
+                        </div>`
+                    }
+                    <div class="flex-grow">
+                        <div class="flex items-center">
+                            <span class="font-medium">${member.name}</span>
+                            <span class="level-badge ${levelInfo.color}">Lv${levelInfo.level}</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold">${member.points} 积分</div>
+                        <div class="text-xs text-gray-400">经验: ${member.experience}</div>
+                    </div>
+                `;
+                container.appendChild(leaderboardItem);
+            });
+        }
+
+        // 渲染赛季排行榜
+        function renderSeasonLeaderboard() {
+            const container = document.getElementById('season-leaderboard-container');
+            
+            if (!appData.season.isActive || appData.members.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-500 text-sm italic">暂无赛季数据</p>';
+                return;
+            }
+
+            // 更新赛季排行榜数据
+            appData.season.leaderboard = appData.members.map(member => ({
+                memberId: member.id,
+                experience: member.seasonExperience
+            }));
+            
+            // 按本赛季经验排序
+            const sortedSeasonData = [...appData.season.leaderboard]
+                .sort((a, b) => b.experience - a.experience)
+                .map(item => {
+                    const member = appData.members.find(m => m.id === item.memberId);
+                    return { ...item, member };
+                })
+                .filter(item => item.member); // 过滤掉已删除的成员
+            
+            container.innerHTML = '';
+            sortedSeasonData.forEach((item, index) => {
+                const { member, experience } = item;
+                const levelInfo = getLevelInfo(member.experience);
+                
+                const leaderboardItem = document.createElement('div');
+                leaderboardItem.className = `flex items-center p-3 rounded-lg ${index < 3 ? 'bg-gray-700' : 'bg-gray-800'}`;
+                leaderboardItem.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center font-bold mr-3 ${
+                        index === 0 ? 'bg-yellow-500' : index === 1 ? 'bg-gray-300 text-gray-800' : index === 2 ? 'bg-amber-700' : ''
+                    }">
+                        ${index + 1}
+                    </div>
+                    ${member.avatarUrl ? 
+                        `<img src="${member.avatarUrl}" alt="${member.name}" class="w-10 h-10 rounded-full object-cover mr-3">` : 
+                        `<div class="bg-${member.avatarColor || 'gray'}-500 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                            <i class="fa fa-user"></i>
+                        </div>`
+                    }
+                    <div class="flex-grow">
+                        <div class="flex items-center">
+                            <span class="font-medium">${member.name}</span>
+                            <span class="level-badge ${levelInfo.color}">Lv${levelInfo.level}</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold">${experience} 经验</div>
+                        <div class="text-xs text-gray-400">总积分: ${member.points}</div>
+                    </div>
+                `;
+                container.appendChild(leaderboardItem);
+            });
+        }
+
+        // 渲染赛季倒计时
+        function renderSeasonCountdown() {
+            const countdownElement = document.getElementById('season-countdown');
+            const badgeElement = document.getElementById('season-countdown-badge');
+            
+            if (!appData.season.isActive || !appData.season.endTime) {
+                countdownElement.textContent = '未开始';
+                badgeElement.classList.add('hidden');
+                return;
+            }
+            
+            const now = new Date().getTime();
+            const endTime = new Date(appData.season.endTime).getTime();
+            const timeLeft = endTime - now;
+            
+            if (timeLeft <= 0) {
+                // 赛季已结束
+                countdownElement.textContent = '已结束';
+                badgeElement.classList.add('hidden');
+                endSeason();
+                return;
+            }
+            
+            // 计算剩余天数和小时
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            const countdownText = `${days}天${hours}时`;
+            countdownElement.textContent = countdownText;
+            
+            // 更新导航栏徽章
+            badgeElement.textContent = countdownText;
+            badgeElement.classList.remove('hidden');
+        }
+
+        // 启动赛季倒计时
+        function startSeasonCountdown() {
+            // 清除之前的定时器
+            if (seasonCountdownTimer) {
+                clearInterval(seasonCountdownTimer);
+            }
+            
+            // 立即更新一次
+            renderSeasonCountdown();
+            
+            // 每小时更新一次
+            seasonCountdownTimer = setInterval(renderSeasonCountdown, 3600000);
+        }
+
+        // 渲染权益成员选择
+        function renderBenefitMembers() {
+            const container = document.getElementById('benefit-members-container');
+            container.innerHTML = '';
+            
+            appData.members.forEach(member => {
+                const memberItem = document.createElement('div');
+                memberItem.className = 'flex items-center';
+                memberItem.innerHTML = `
+                    <input type="checkbox" id="benefit-member-${member.id}" class="mr-2" data-id="${member.id}">
+                    <label for="benefit-member-${member.id}">${member.name}</label>
+                `;
+                container.appendChild(memberItem);
+            });
+        }
+
+        // 渲染兑换成员选择
+        function renderRedeemMembers() {
+            const container = document.getElementById('redeem-members-container');
+            container.innerHTML = '';
+            
+            appData.members.forEach(member => {
+                // 只显示积分足够的成员
+                const isEligible = currentRedeemReward ? member.points >= currentRedeemReward.points : true;
+                
+                const memberItem = document.createElement('div');
+                memberItem.className = `flex items-center ${!isEligible ? 'opacity-50' : ''}`;
+                memberItem.innerHTML = `
+                    <input type="radio" name="redeem-member" id="redeem-member-${member.id}" 
+                        class="mr-2" data-id="${member.id}" ${!isEligible ? 'disabled' : ''}>
+                    <label for="redeem-member-${member.id}">
+                        ${member.name} (${member.points} 积分)
+                        ${!isEligible ? '<span class="text-xs text-negative">(积分不足)</span>' : ''}
+                    </label>
+                `;
+                container.appendChild(memberItem);
+            });
+        }
+
+        // 添加成员
+        function addMember(name) {
+            if (!name || name.trim() === '') return;
+            
+            // 随机选择一个默认头像颜色
+            const randomColor = appData.defaultAvatarColors[Math.floor(Math.random() * appData.defaultAvatarColors.length)];
+            
+            const newMember = {
+                id: appData.nextMemberId++,
+                name: name.trim(),
+                points: 0,
+                experience: 0,
+                seasonExperience: 0,
+                avatarUrl: null,
+                avatarColor: randomColor
+            };
+            
+            appData.members.push(newMember);
+            
+            // 添加到赛季排行榜
+            appData.season.leaderboard.push({
+                memberId: newMember.id,
+                experience: 0
+            });
+            
+            saveData();
+            renderAll();
+            showToast('添加成功', 'success');
+        }
+
+        // 更新积分
+        function updatePoints(memberId, type, points, reason) {
+            const member = appData.members.find(m => m.id === memberId);
+            if (!member) return;
+            
+            const pointValue = type === 'add' ? points : -points;
+            const newPoints = member.points + pointValue;
+            
+            // 确保积分不会为负
+            if (newPoints < 0) {
+                showToast('积分不能为负数', 'error');
+                return;
+            }
+            
+            // 更新积分
+            member.points = newPoints;
+            
+            // 更新经验（与积分变化相同）
+            const expChange = Math.abs(pointValue);
+            member.experience += expChange;
+            
+            // 如果赛季活跃，同时更新本赛季经验
+            if (appData.season.isActive) {
+                member.seasonExperience += expChange;
+            }
+            
+            // 记录历史
+            appData.history.push({
+                memberId,
+                memberName: member.name,
+                type,
+                points: pointValue,
+                reason,
+                timestamp: new Date().toISOString()
+            });
+            
+            // 限制历史记录数量
+            if (appData.history.length > 100) {
+                appData.history.shift();
+            }
+            
+            saveData();
+            renderAll();
+            showToast(`${type === 'add' ? '添加' : '扣除'}成功`, 'success');
+        }
+
+        // 添加奖励
+        function addReward(name, points) {
+            if (!name || name.trim() === '' || !points || points <= 0) return;
+            
+            const newReward = {
+                id: Date.now(),
+                name: name.trim(),
+                points: parseInt(points)
+            };
+            
+            appData.rewards.push(newReward);
+            saveData();
+            renderRewards();
+            showToast('奖励已添加', 'success');
+        }
+
+        // 删除奖励
+        function deleteReward(id) {
+            appData.rewards = appData.rewards.filter(reward => reward.id !== id);
+            saveData();
+            renderRewards();
+            showToast('奖励已删除', 'success');
+        }
+
+        // 兑换奖励
+        function redeemReward(rewardId, memberId) {
+            const reward = appData.rewards.find(r => r.id === rewardId);
+            const member = appData.members.find(m => m.id === memberId);
+            
+            if (!reward || !member) return;
+            if (member.points < reward.points) {
+                showToast('积分不足，无法兑换', 'error');
+                return;
+            }
+            
+            // 扣除积分
+            updatePoints(memberId, 'deduct', reward.points, `兑换奖励: ${reward.name}`);
+            
+            // 从奖励列表中移除
+            deleteReward(rewardId);
+        }
+
+        // 添加权益
+        function addBenefit(name, count, memberIds) {
+            if (!name || name.trim() === '' || !count || count <= 0 || !memberIds || memberIds.length === 0) return;
+            
+            const newBenefit = {
+                id: appData.nextBenefitId++,
+                name: name.trim(),
+                totalCount: parseInt(count),
+                remainingCount: parseInt(count),
+                memberIds: memberIds
+            };
+            
+            appData.benefits.push(newBenefit);
+            saveData();
+            renderBenefits();
+            showToast('权益已添加', 'success');
+        }
+
+        // 编辑权益
+        function editBenefit(id) {
+            const benefit = appData.benefits.find(b => b.id === id);
+            if (!benefit) return;
+            
+            const newName = prompt('请输入权益名称', benefit.name);
+            if (!newName || newName.trim() === '') return;
+            
+            const newCount = prompt('请输入权益次数', benefit.totalCount);
+            if (!newCount || newCount <= 0) return;
+            
+            benefit.name = newName.trim();
+            benefit.totalCount = parseInt(newCount);
+            benefit.remainingCount = Math.min(benefit.remainingCount, parseInt(newCount));
+            
+            saveData();
+            renderBenefits();
+            showToast('权益已更新', 'success');
+        }
+
+        // 删除权益
+        function deleteBenefit(id) {
+            appData.benefits = appData.benefits.filter(benefit => benefit.id !== id);
+            saveData();
+            renderBenefits();
+            showToast('权益已删除', 'success');
+        }
+
+        // 使用权益
+        function useBenefit(id) {
+            const benefit = appData.benefits.find(b => b.id === id);
+            if (!benefit) return;
+            
+            if (benefit.remainingCount <= 0) {
+                showToast('权益次数已用完', 'error');
+                return;
+            }
+            
+            benefit.remainingCount--;
+            saveData();
+            renderBenefits();
+            showToast('权益已使用', 'success');
+        }
+
+        // 重置权益次数
+        function resetBenefit(id) {
+            const benefit = appData.benefits.find(b => b.id === id);
+            if (!benefit) return;
+            
+            benefit.remainingCount = benefit.totalCount;
+            saveData();
+            renderBenefits();
+            showToast('权益次数已重置', 'success');
+        }
+
+        // 设置头像
+        function setAvatar(memberId, avatarUrl = null, avatarColor = null) {
+            const member = appData.members.find(m => m.id === memberId);
+            if (!member) return;
+            
+            member.avatarUrl = avatarUrl;
+            if (avatarColor) {
+                member.avatarColor = avatarColor;
+            }
+            
+            saveData();
+            renderMembers();
+            showToast('头像已更新', 'success');
+        }
+
+        // 显示提示消息
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toast-icon');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            
+            // 设置图标
+            if (type === 'success') {
+                toastIcon.className = 'fa fa-check-circle mr-2';
+                toast.classList.remove('bg-negative');
+                toast.classList.add('bg-primary');
+            } else {
+                toastIcon.className = 'fa fa-exclamation-circle mr-2';
+                toast.classList.remove('bg-primary');
+                toast.classList.add('bg-negative');
+            }
+            
+            // 显示提示
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // 显示确认对话框
+        function showConfirmation(title, message, callback) {
+            const modal = document.getElementById('confirmation-modal');
+            const titleElement = document.getElementById('confirmation-title');
+            const messageElement = document.getElementById('confirmation-message');
+            
+            titleElement.textContent = title;
+            messageElement.textContent = message;
+            modal.classList.add('active');
+            
+            // 保存回调函数
+            confirmationCallback = callback;
+        }
+
+        // 开始新赛季
+        function startNewSeason(durationDays) {
+            const now = new Date();
+            const endTime = new Date(now);
+            endTime.setDate(now.getDate() + durationDays);
+            
+            appData.season = {
+                isActive: true,
+                startTime: now.toISOString(),
+                endTime: endTime.toISOString(),
+                durationDays: durationDays,
+                leaderboard: appData.members.map(member => ({
+                    memberId: member.id,
+                    experience: 0
+                }))
+            };
+            
+            // 重置所有成员的本赛季经验
+            appData.members.forEach(member => {
+                member.seasonExperience = 0;
+            });
+            
+            saveData();
+            renderAll();
+            startSeasonCountdown();
+            showToast(`新赛季已开始，将在${durationDays}天后结束`, 'success');
+        }
+
+        // 结束当前赛季
+        function endSeason() {
+            // 所有成员等级减1（最低到1级）
+            appData.members.forEach(member => {
+                const currentLevel = getLevelInfo(member.experience).level;
+                if (currentLevel > 1) {
+                    // 找到上一级的最小经验值
+                    const prevLevelInfo = levelConfig.find(level => level.level === currentLevel - 1);
+                    if (prevLevelInfo) {
+                        member.experience = prevLevelInfo.minExp;
+                    }
+                }
+            });
+            
+            // 重置赛季状态
+            appData.season.isActive = false;
+            appData.season.startTime = null;
+            appData.season.endTime = null;
+            
+            saveData();
+            renderAll();
+            
+            // 清除定时器
+            if (seasonCountdownTimer) {
+                clearInterval(seasonCountdownTimer);
+                seasonCountdownTimer = null;
+            }
+            
+            showToast('本赛季已结束，所有成员等级减1', 'success');
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载数据
+            loadData();
+            
+            // 页面切换
+            document.getElementById('benefits-btn').addEventListener('click', function() {
+                document.getElementById('home-page').classList.remove('active');
+                document.getElementById('benefits-page').classList.add('active');
+                document.getElementById('leaderboard-page').classList.remove('active');
+                document.getElementById('season-page').classList.remove('active');
+            });
+            
+            document.getElementById('back-from-benefits-btn').addEventListener('click', function() {
+                document.getElementById('benefits-page').classList.remove('active');
+                document.getElementById('home-page').classList.add('active');
+            });
+            
+            document.getElementById('leaderboard-btn').addEventListener('click', function() {
+                document.getElementById('home-page').classList.remove('active');
+                document.getElementById('benefits-page').classList.remove('active');
+                document.getElementById('leaderboard-page').classList.add('active');
+                document.getElementById('season-page').classList.remove('active');
+                renderLeaderboard();
+            });
+            
+            document.getElementById('back-from-leaderboard-btn').addEventListener('click', function() {
+                document.getElementById('leaderboard-page').classList.remove('active');
+                document.getElementById('home-page').classList.add('active');
+            });
+            
+            // 赛季页面相关
+            document.getElementById('season-btn').addEventListener('click', function() {
+                document.getElementById('home-page').classList.remove('active');
+                document.getElementById('benefits-page').classList.remove('active');
+                document.getElementById('leaderboard-page').classList.remove('active');
+                document.getElementById('season-page').classList.add('active');
+                renderSeasonLeaderboard();
+                document.getElementById('season-duration').value = appData.season.durationDays;
+            });
+            
+            document.getElementById('back-from-season-btn').addEventListener('click', function() {
+                document.getElementById('season-page').classList.remove('active');
+                document.getElementById('home-page').classList.add('active');
+            });
+            
+            document.getElementById('start-season-btn').addEventListener('click', function() {
+                const duration = parseInt(document.getElementById('season-duration').value);
+                if (isNaN(duration) || duration < 1) {
+                    showToast('请输入有效的赛季天数', 'error');
+                    return;
+                }
+                
+                if (appData.season.isActive) {
+                    showConfirmation('开始新赛季', '当前赛季正在进行中，确定要开始新赛季吗？', () => {
+                        startNewSeason(duration);
+                    });
+                } else {
+                    startNewSeason(duration);
+                }
+            });
+            
+            document.getElementById('end-season-btn').addEventListener('click', function() {
+                if (!appData.season.isActive) {
+                    showToast('当前没有活跃的赛季', 'error');
+                    return;
+                }
+                
+                showConfirmation('结束赛季', '确定要立即结束当前赛季吗？所有成员等级将减1。', () => {
+                    endSeason();
+                });
+            });
+            
+            // 添加成员
+            document.getElementById('add-member-btn').addEventListener('click', function() {
+                document.getElementById('new-member-name').value = '';
+                document.getElementById('add-member-modal').classList.remove('hidden');
+                document.getElementById('new-member-name').focus();
+            });
+            
+            document.getElementById('cancel-add-member').addEventListener('click', function() {
+                document.getElementById('add-member-modal').classList.add('hidden');
+            });
+            
+            document.getElementById('confirm-add-member').addEventListener('click', function() {
+                const name = document.getElementById('new-member-name').value;
+                addMember(name);
+                document.getElementById('add-member-modal').classList.add('hidden');
+            });
+            
+            // 添加奖励
+            document.getElementById('add-reward-btn').addEventListener('click', function() {
+                document.getElementById('new-reward-name').value = '';
+                document.getElementById('new-reward-points').value = '';
+                document.getElementById('add-reward-modal').classList.remove('hidden');
+                document.getElementById('new-reward-name').focus();
+            });
+            
+            document.getElementById('cancel-add-reward').addEventListener('click', function() {
+                document.getElementById('add-reward-modal').classList.add('hidden');
+            });
+            
+            document.getElementById('confirm-add-reward').addEventListener('click', function() {
+                const name = document.getElementById('new-reward-name').value;
+                const points = document.getElementById('new-reward-points').value;
+                addReward(name, points);
+                document.getElementById('add-reward-modal').classList.add('hidden');
+            });
+            
+            // 添加权益
+            document.getElementById('add-benefit-btn').addEventListener('click', function() {
+                document.getElementById('new-benefit-name').value = '';
+                document.getElementById('new-benefit-count').value = '';
+                renderBenefitMembers();
+                document.getElementById('add-benefit-modal').classList.remove('hidden');
+                document.getElementById('new-benefit-name').focus();
+            });
+            
+            document.getElementById('cancel-add-benefit').addEventListener('click', function() {
+                document.getElementById('add-benefit-modal').classList.add('hidden');
+            });
+            
+            document.getElementById('confirm-add-benefit').addEventListener('click', function() {
+                const name = document.getElementById('new-benefit-name').value;
+                const count = document.getElementById('new-benefit-count').value;
+                const memberIds = [];
+                
+                document.querySelectorAll('#benefit-members-container input:checked').forEach(checkbox => {
+                    memberIds.push(parseInt(checkbox.getAttribute('data-id')));
+                });
+                
+                addBenefit(name, count, memberIds);
+                document.getElementById('add-benefit-modal').classList.add('hidden');
+            });
+            
+            // 自定义积分操作
+            document.getElementById('cancel-custom-points').addEventListener('click', function() {
+                document.getElementById('custom-points-modal').classList.add('hidden');
+            });
+            
+            document.getElementById('confirm-custom-points').addEventListener('click', function() {
+                const type = document.getElementById('custom-points-type').value;
+                const value = parseInt(document.getElementById('custom-points-value').value);
+                const reason = document.getElementById('custom-points-reason').value || (type === 'add' ? '自定义加分' : '自定义扣分');
+                
+                if (isNaN(value) || value <= 0) {
+                    showToast('请输入有效的积分值', 'error');
+                    return;
+                }
+                
+                if (currentMemberId) {
+                    updatePoints(currentMemberId, type, value, reason);
+                    document.getElementById('custom-points-modal').classList.add('hidden');
+                    currentMemberId = null;
+                }
+            });
+            
+            // 头像设置
+            document.getElementById('cancel-avatar').addEventListener('click', function() {
+                document.getElementById('avatar-modal').classList.add('hidden');
+                currentAvatarMemberId = null;
+            });
+            
+            document.getElementById('confirm-avatar').addEventListener('click', function() {
+                if (currentAvatarMemberId) {
+                    const avatarPreview = document.getElementById('avatar-preview');
+                    if (avatarPreview.classList.contains('hidden')) {
+                        // 使用默认头像
+                        setAvatar(currentAvatarMemberId, null, selectedAvatarColor || appData.defaultAvatarColors[0]);
+                    } else {
+                        // 使用上传的头像
+                        setAvatar(currentAvatarMemberId, avatarPreview.src);
+                    }
+                    document.getElementById('avatar-modal').classList.add('hidden');
+                    currentAvatarMemberId = null;
+                    selectedAvatarColor = null;
+                }
+            });
+            
+            document.getElementById('avatar-input').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const avatarPreview = document.getElementById('avatar-preview');
+                        const avatarDefault = document.getElementById('avatar-default');
+                        
+                        avatarPreview.src = event.target.result;
+                        avatarPreview.classList.remove('hidden');
+                        avatarDefault.classList.add('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            document.getElementById('default-avatar-btn').addEventListener('click', function() {
+                document.getElementById('avatar-modal').classList.add('hidden');
+                document.getElementById('default-avatar-modal').classList.remove('hidden');
+                
+                // 重置选择状态
+                document.querySelectorAll('.avatar-option').forEach(option => {
+                    option.classList.remove('avatar-selected');
+                    option.querySelector('.avatar-selected-icon').classList.add('hidden');
+                });
+                
+                // 如果有当前选择的颜色，默认选中
+                if (selectedAvatarColor) {
+                    const colorClass = `bg-${selectedAvatarColor}-500`;
+                    document.querySelectorAll('.avatar-option').forEach(option => {
+                        if (option.classList.contains(colorClass)) {
+                            option.classList.add('avatar-selected');
+                            option.querySelector('.avatar-selected-icon').classList.remove('hidden');
+                        }
+                    });
+                }
+            });
+            
+            document.querySelectorAll('.avatar-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // 重置所有选择状态
+                    document.querySelectorAll('.avatar-option').forEach(opt => {
+                        opt.classList.remove('avatar-selected');
+                        opt.querySelector('.avatar-selected-icon').classList.add('hidden');
+                    });
+                    
+                    // 设置当前选择
+                    this.classList.add('avatar-selected');
+                    this.querySelector('.avatar-selected-icon').classList.remove('hidden');
+                    selectedAvatarColor = this.getAttribute('data-color');
+                });
+            });
+            
+            document.getElementById('cancel-default-avatar').addEventListener('click', function() {
+                document.getElementById('default-avatar-modal').classList.add('hidden');
+                if (currentAvatarMemberId) {
+                    document.getElementById('avatar-modal').classList.remove('hidden');
+                }
+            });
+            
+            document.getElementById('confirm-default-avatar').addEventListener('click', function() {
+                document.getElementById('default-avatar-modal').classList.add('hidden');
+                if (currentAvatarMemberId) {
+                    document.getElementById('avatar-modal').classList.remove('hidden');
+                    
+                    // 更新预览
+                    const avatarDefault = document.getElementById('avatar-default');
+                    if (selectedAvatarColor) {
+                        avatarDefault.className = `fa fa-user text-4xl flex items-center justify-center w-full h-full bg-${selectedAvatarColor}-500`;
+                    }
+                }
+            });
+            
+            // 兑换奖励
+            document.getElementById('cancel-redeem-member').addEventListener('click', function() {
+                document.getElementById('select-redeem-member-modal').classList.add('hidden');
+                currentRedeemReward = null;
+            });
+            
+            document.getElementById('confirm-redeem-member').addEventListener('click', function() {
+                const selectedMember = document.querySelector('#redeem-members-container input:checked');
+                if (!selectedMember) {
+                    showToast('请选择一个成员', 'error');
+                    return;
+                }
+                
+                if (currentRedeemReward) {
+                    const memberId = parseInt(selectedMember.getAttribute('data-id'));
+                    redeemReward(currentRedeemReward.id, memberId);
+                    document.getElementById('select-redeem-member-modal').classList.add('hidden');
+                    currentRedeemReward = null;
+                }
+            });
+            
+            // 确认对话框
+            document.getElementById('confirmation-cancel').addEventListener('click', function() {
+                document.getElementById('confirmation-modal').classList.remove('active');
+                confirmationCallback = null;
+            });
+            
+            document.getElementById('confirmation-confirm').addEventListener('click', function() {
+                if (confirmationCallback) {
+                    confirmationCallback();
+                }
+                document.getElementById('confirmation-modal').classList.remove('active');
+                confirmationCallback = null;
+            });
+            
+            // 清空历史记录
+            document.getElementById('clear-history-btn').addEventListener('click', function() {
+                showConfirmation('清空记录', '确定要清空所有积分记录吗？', () => {
+                    appData.history = [];
+                    saveData();
+                    renderHistory();
+                    showToast('记录已清空', 'success');
+                });
+            });
+            
+            // 重置系统
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                showConfirmation('重置系统', '确定要恢复系统到初始状态吗？所有数据将被清除。', () => {
+                    localStorage.removeItem('familyPointsData');
+                    initializeDefaultData();
+                    renderAll();
+                    showToast('系统已重置', 'success');
+                });
+            });
+            
+            // 快速操作管理
+            document.getElementById('quick-actions-manage-btn').addEventListener('click', function() {
+                renderQuickActions();
+                document.getElementById('quick-actions-modal').classList.remove('hidden');
+            });
+            
+            document.getElementById('cancel-quick-actions').addEventListener('click', function() {
+                document.getElementById('quick-actions-modal').classList.add('hidden');
+            });
+            
+            document.getElementById('save-quick-actions').addEventListener('click', function() {
+                document.getElementById('quick-actions-modal').classList.add('hidden');
+                showToast('快速操作已保存', 'success');
+            });
+            
+            document.getElementById('add-quick-action-btn').addEventListener('click', function() {
+                currentQuickActionIndex = null;
+                document.getElementById('quick-action-type').value = 'add';
+                document.getElementById('quick-action-points').value = '';
+                document.getElementById('quick-action-label').value = '';
+                document.getElementById('quick-actions-modal').classList.add('hidden');
+                document.getElementById('add-quick-action-modal').classList.remove('hidden');
+            });
+            
+            document.getElementById('cancel-add-quick-action').addEventListener('click', function() {
+                document.getElementById('add-quick-action-modal').classList.add('hidden');
+                document.getElementById('quick-actions-modal').classList.remove('hidden');
+            });
+            
+            document.getElementById('confirm-add-quick-action').addEventListener('click', function() {
+                const type = document.getElementById('quick-action-type').value;
+                const points = parseInt(document.getElementById('quick-action-points').value);
+                const label = document.getElementById('quick-action-label').value;
+                
+                if (isNaN(points) || points <= 0) {
+                    showToast('请输入有效的积分值', 'error');
+                    return;
+                }
+                
+                if (currentQuickActionIndex !== null) {
+                    updateQuickAction(currentQuickActionIndex, type, points, label || null);
+                } else {
+                    addQuickAction(type, points, label || null);
+                }
+                
+                document.getElementById('add-quick-action-modal').classList.add('hidden');
+                document.getElementById('quick-actions-modal').classList.remove('hidden');
+                currentQuickActionIndex = null;
+            });
+        });
+    </script>
+</body>
+</html>
