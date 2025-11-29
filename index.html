@@ -5,11 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>单页面导航网站</title>
     <style>
-        /* 添加之前的样式代码 */
+        /* 基础样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        /* 导航栏样式 */
+        nav {
+            background-color: #333;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        nav li {
+            margin: 0 15px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav a:hover {
+            background-color: #555;
+        }
+        
         /* 页面切换动画 */
         .page {
             display: none;
             animation: fadeIn 0.5s;
+            padding: 20px;
         }
         
         .page.active {
@@ -19,6 +58,46 @@
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+        
+        /* 容器样式 */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 下载按钮样式 */
+        .download-btn {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .download-btn:hover {
+            background: #0056b3;
+        }
+        
+        /* 侯得屋页面链接样式 */
+        .houdewu-link {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 18px;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .houdewu-link:hover {
+            background: #218838;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -34,11 +113,12 @@
 
     <div class="container">
         <div id="home" class="page active">
-            <h1>首页内容</h1>
-            <p>欢迎访问！</p>
+            <h1>欢迎来到我的网站</h1>
+            <p>这是一个单页面导航网站示例。</p>
+            <p>使用上方的导航菜单在不同页面之间切换。</p>
         </div>
 
-        <div id="downloads" class="page"
+        <div id="downloads" class="page">
             <h1>下载页面</h1>
             <div class="download-section">
                 <h3>可用下载：</h3>
@@ -49,14 +129,37 @@
                 <a href="documents/guide.pdf" download class="download-btn">
                     📚 用户指南
                 </a>
+                <a href="downloads/sample.txt" download class="download-btn">
+                    📄 示例文件
+                </a>
             </div>
         </div>
-        <div id="houdewu" class="page active">
-            <a href="1.html">积分系统（由侯得屋提供）</a>
+
+        <div id="houdewu" class="page">
+            <h1>侯得屋</h1>
+            <p>欢迎访问侯得屋提供的积分系统</p>
+            <a href="1.html" class="houdewu-link">
+                点击进入积分系统（由侯得屋提供）
+            </a>
+            <p style="margin-top: 20px; color: #666;">
+                注意：点击此链接将跳转到独立的积分系统页面
+            </p>
         </div>
+
         <div id="gallery" class="page">
             <h1>图片库</h1>
             <p>这里可以展示图片等内容。</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                    📷 图片1
+                </div>
+                <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                    📷 图片2
+                </div>
+                <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                    📷 图片3
+                </div>
+            </div>
         </div>
     </div>
 
@@ -69,8 +172,21 @@
                     e.preventDefault();
                     const pageId = this.getAttribute('data-page');
                     switchPage(pageId);
+                    
+                    // 更新URL（可选，便于分享链接）
+                    history.pushState(null, null, '#' + pageId);
                 });
             });
+            
+            // 处理浏览器前进后退按钮
+            window.addEventListener('popstate', function() {
+                const pageId = window.location.hash.substring(1) || 'home';
+                switchPage(pageId);
+            });
+            
+            // 页面加载时检查URL hash
+            const initialPage = window.location.hash.substring(1) || 'home';
+            switchPage(initialPage);
         });
 
         function switchPage(pageId) {
@@ -83,6 +199,15 @@
             const targetPage = document.getElementById(pageId);
             if (targetPage) {
                 targetPage.classList.add('active');
+                
+                // 更新导航激活状态（可选）
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.style.backgroundColor = '';
+                });
+                const activeLink = document.querySelector(`nav a[data-page="${pageId}"]`);
+                if (activeLink) {
+                    activeLink.style.backgroundColor = '#007bff';
+                }
             }
         }
     </script>
