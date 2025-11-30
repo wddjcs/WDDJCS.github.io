@@ -1,143 +1,168 @@
 <!DOCTYPE html>
+<!-- 定义文档类型和语言 -->
 <html lang="zh-CN">
 <head>
+    <!-- 字符编码设置，确保中文正确显示 -->
     <meta charset="UTF-8">
+    <!-- 视口设置，使网站在移动设备上正确显示 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wddjcs的网站</title>
+    <!-- 网页标题，显示在浏览器标签页上 -->
+    <title>单页面导航网站</title>
+    <!-- 内部CSS样式 -->
     <style>
-        /* 基础样式 */
+        /* 基础页面样式 */
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
+            font-family: Arial, sans-serif; /* 设置字体 */
+            margin: 0; /* 移除默认外边距 */
+            padding: 20px; /* 添加内边距 */
+            line-height: 1.6; /* 设置行高 */
         }
         
         /* 导航栏样式 */
         nav {
-            background-color: #333;
-            padding: 15px 0;
-            margin-bottom: 20px;
+            background-color: #333; /* 导航栏背景色 */
+            padding: 15px 0; /* 上下内边距 */
+            margin-bottom: 20px; /* 底部外边距 */
         }
         
+        /* 导航栏列表样式 */
         nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
+            list-style: none; /* 移除列表默认样式 */
+            padding: 0; /* 移除内边距 */
+            margin: 0; /* 移除外边距 */
+            display: flex; /* 使用弹性布局 */
+            justify-content: center; /* 水平居中 */
         }
         
+        /* 导航栏列表项样式 */
         nav li {
-            margin: 0 15px;
+            margin: 0 15px; /* 左右外边距 */
         }
         
+        /* 导航链接样式 */
         nav a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
+            color: white; /* 文字颜色 */
+            text-decoration: none; /* 移除下划线 */
+            padding: 8px 16px; /* 内边距 */
+            border-radius: 4px; /* 圆角边框 */
+            transition: background-color 0.3s; /* 背景色过渡动画 */
         }
         
+        /* 导航链接悬停效果 */
         nav a:hover {
-            background-color: #555;
+            background-color: #555; /* 悬停时背景色 */
         }
         
-        /* 页面切换动画 */
+        /* 页面容器样式 - 初始隐藏 */
         .page {
-            display: none;
-            animation: fadeIn 0.5s;
-            padding: 20px;
+            display: none; /* 默认隐藏所有页面 */
+            animation: fadeIn 0.5s; /* 淡入动画 */
+            padding: 20px; /* 内边距 */
         }
         
+        /* 活动页面样式 - 显示 */
         .page.active {
-            display: block;
+            display: block; /* 显示活动页面 */
         }
         
+        /* 淡入动画定义 */
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; } /* 从完全透明开始 */
+            to { opacity: 1; } /* 到完全不透明结束 */
         }
         
-        /* 容器样式 */
+        /* 主容器样式 */
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 800px; /* 最大宽度 */
+            margin: 0 auto; /* 水平居中 */
         }
         
         /* 下载按钮样式 */
         .download-btn {
-            display: inline-block;
-            background: #007bff;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 10px 5px;
-            transition: background-color 0.3s;
+            display: inline-block; /* 行内块元素 */
+            background: #007bff; /* 背景色 */
+            color: white; /* 文字颜色 */
+            padding: 10px 20px; /* 内边距 */
+            text-decoration: none; /* 移除下划线 */
+            border-radius: 5px; /* 圆角边框 */
+            margin: 10px 5px; /* 外边距 */
+            transition: background-color 0.3s; /* 背景色过渡动画 */
         }
         
+        /* 下载按钮悬停效果 */
         .download-btn:hover {
-            background: #0056b3;
+            background: #0056b3; /* 悬停时背景色 */
         }
         
         /* 侯得屋页面链接样式 */
         .houdewu-link {
-            display: inline-block;
-            background: #28a745;
-            color: white;
-            padding: 15px 25px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 18px;
-            margin: 20px 0;
-            transition: all 0.3s;
+            display: inline-block; /* 行内块元素 */
+            background: #28a745; /* 背景色 */
+            color: white; /* 文字颜色 */
+            padding: 15px 25px; /* 内边距 */
+            text-decoration: none; /* 移除下划线 */
+            border-radius: 8px; /* 圆角边框 */
+            font-size: 18px; /* 字体大小 */
+            margin: 20px 0; /* 上下外边距 */
+            transition: all 0.3s; /* 所有属性过渡动画 */
         }
         
+        /* 侯得屋链接悬停效果 */
         .houdewu-link:hover {
-            background: #218838;
-            transform: scale(1.05);
+            background: #218838; /* 悬停时背景色 */
+            transform: scale(1.05); /* 悬停时轻微放大 */
         }
     </style>
 </head>
 <body>
+    <!-- 导航栏 -->
     <nav>
         <ul>
+            <!-- 首页导航项 -->
             <li><a href="#" data-page="home">首页</a></li>
+            <!-- 下载页面导航项 -->
             <li><a href="#" data-page="downloads">下载</a></li>
+            <!-- 图库页面导航项 -->
             <li><a href="#" data-page="gallery">图库</a></li>
+            <!-- 侯得屋页面导航项 -->
             <li><a href="#" data-page="houdewu">侯得屋</a></li>
         </ul>
     </nav>
 
+    <!-- 页面内容容器 -->
     <div class="container">
+        <!-- 首页内容 -->
         <div id="home" class="page active">
             <h1>欢迎来到我的网站</h1>
             <p>这是一个单页面导航网站示例。</p>
             <p>使用上方的导航菜单在不同页面之间切换。</p>
         </div>
 
+        <!-- 下载页面内容 -->
         <div id="downloads" class="page">
             <h1>下载页面</h1>
             <div class="download-section">
                 <h3>可用下载：</h3>
-                <!-- 实际文件链接 -->
+                <!-- 应用程序下载链接 -->
                 <a href="downloads/my-app.zip" download class="download-btn">
                     ⬇️ 下载应用程序
                 </a>
+                <!-- 用户指南下载链接 -->
                 <a href="documents/guide.pdf" download class="download-btn">
                     📚 用户指南
                 </a>
+                <!-- 示例文件下载链接 -->
                 <a href="downloads/sample.txt" download class="download-btn">
                     📄 示例文件
                 </a>
             </div>
         </div>
 
+        <!-- 侯得屋页面内容 -->
         <div id="houdewu" class="page">
             <h1>侯得屋</h1>
             <p>欢迎访问侯得屋提供的积分系统</p>
+            <!-- 跳转到积分系统的链接 -->
             <a href="1.html" class="houdewu-link">
                 点击进入积分系统（由侯得屋提供）
             </a>
@@ -146,16 +171,21 @@
             </p>
         </div>
 
+        <!-- 图库页面内容 -->
         <div id="gallery" class="page">
             <h1>图片库</h1>
             <p>这里可以展示图片等内容。</p>
+            <!-- 图片网格布局 -->
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                <!-- 图片占位符1 -->
                 <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
                     📷 图片1
                 </div>
+                <!-- 图片占位符2 -->
                 <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
                     📷 图片2
                 </div>
+                <!-- 图片占位符3 -->
                 <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
                     📷 图片3
                 </div>
@@ -163,34 +193,37 @@
         </div>
     </div>
 
+    <!-- JavaScript代码 -->
     <script>
-        // 改进的导航脚本
+        // 当文档加载完成后执行
         document.addEventListener('DOMContentLoaded', function() {
-            // 导航点击事件
+            // 为所有导航链接添加点击事件监听器
             document.querySelectorAll('nav a').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const pageId = this.getAttribute('data-page');
-                    switchPage(pageId);
+                    e.preventDefault(); // 阻止链接默认行为
+                    const pageId = this.getAttribute('data-page'); // 获取目标页面ID
+                    switchPage(pageId); // 切换到目标页面
                     
-                    // 更新URL（可选，便于分享链接）
+                    // 更新URL哈希（可选，便于分享链接）
                     history.pushState(null, null, '#' + pageId);
                 });
             });
             
             // 处理浏览器前进后退按钮
             window.addEventListener('popstate', function() {
+                // 从URL哈希获取页面ID，默认为home
                 const pageId = window.location.hash.substring(1) || 'home';
-                switchPage(pageId);
+                switchPage(pageId); // 切换到对应页面
             });
             
-            // 页面加载时检查URL hash
+            // 页面加载时检查URL哈希
             const initialPage = window.location.hash.substring(1) || 'home';
-            switchPage(initialPage);
+            switchPage(initialPage); // 切换到初始页面
         });
 
+        // 页面切换函数
         function switchPage(pageId) {
-            // 移除所有活动的页面
+            // 移除所有页面的active类
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
@@ -202,8 +235,9 @@
                 
                 // 更新导航激活状态（可选）
                 document.querySelectorAll('nav a').forEach(link => {
-                    link.style.backgroundColor = '';
+                    link.style.backgroundColor = ''; // 清除所有链接的背景色
                 });
+                // 为当前活动链接添加背景色
                 const activeLink = document.querySelector(`nav a[data-page="${pageId}"]`);
                 if (activeLink) {
                     activeLink.style.backgroundColor = '#007bff';
