@@ -238,7 +238,7 @@
             
             /* 移动端激活的菜单 */
             nav ul.mobile-active {
-                display: flex;
+                display: flex !important;
             }
             
             /* 导航项样式 */
@@ -466,6 +466,27 @@
                     }
                 });
             }
+            // 在hamburgerBtn点击事件中添加console.log调试
+            hamburgerBtn.addEventListener('click', function(e) {
+                console.log('汉堡菜单被点击了');
+                console.log('当前mainNav的class列表:', mainNav.className);
+    
+                e.stopPropagation();
+                mainNav.classList.toggle('mobile-active');
+    
+                console.log('切换后mainNav的class列表:', mainNav.className);
+    
+                // 切换按钮图标
+                if (mainNav.classList.contains('mobile-active')) {
+                    this.textContent = '✕';
+                    this.setAttribute('aria-label', '关闭菜单');
+                    console.log('菜单状态: 已展开');
+                } else {
+                    this.textContent = '☰';
+                    this.setAttribute('aria-label', '打开菜单');
+                    console.log('菜单状态: 已折叠');
+                }
+            });
             
             // ==================== 页面切换功能 ====================
             // 为所有导航链接添加点击事件监听器
