@@ -1,130 +1,377 @@
 <!DOCTYPE html>
-<!-- 定义文档类型和语言 -->
 <html lang="zh-CN">
 <head>
-    <!-- 字符编码设置，确保中文正确显示 -->
     <meta charset="UTF-8">
-    <!-- 视口设置，使网站在移动设备上正确显示 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 网页标题，显示在浏览器标签页上 -->
+    <!-- 增强的视口设置，优化移动端体验 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>wddjcs的网站</title>
-    <!-- 内部CSS样式 -->
     <style>
-        /* 基础页面样式 */
+        /* 基础页面样式 - 移动端优先 */
+        * {
+            box-sizing: border-box; /* 包含内边距和边框在元素尺寸内 */
+        }
+        
         body {
-            font-family: Arial, sans-serif; /* 设置字体 */
-            margin: 0; /* 移除默认外边距 */
-            padding: 20px; /* 添加内边距 */
-            line-height: 1.6; /* 设置行高 */
+            font-family: Arial, sans-serif, "PingFang SC", "Microsoft YaHei"; /* 中文字体优化 */
+            margin: 0;
+            padding: 0; /* 移动端减少内边距 */
+            line-height: 1.5; /* 提高可读性 */
+            color: #333; /* 提高对比度 */
+            background-color: #f8f9fa; /* 浅色背景 */
+            -webkit-text-size-adjust: 100%; /* 防止iOS文字缩放 */
+            -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮 */
         }
         
-        /* 导航栏样式 */
+        /* 导航栏样式 - 移动端响应式 */
         nav {
-            background-color: #333; /* 导航栏背景色 */
-            padding: 15px 0; /* 上下内边距 */
-            margin-bottom: 20px; /* 底部外边距 */
+            background-color: #2c3e50; /* 更深的导航背景 */
+            padding: 0; /* 移除默认内边距 */
+            margin-bottom: 15px; /* 移动端减少间距 */
+            position: sticky; /* 粘性定位，滚动时保持可见 */
+            top: 0;
+            z-index: 1000; /* 确保在最上层 */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* 添加阴影 */
         }
         
-        /* 导航栏列表样式 */
+        /* 汉堡菜单按钮 - 移动端显示 */
+        .menu-toggle {
+            display: none; /* 默认隐藏，移动端显示 */
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 15px;
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 5px;
+        }
+        
         nav ul {
-            list-style: none; /* 移除列表默认样式 */
-            padding: 0; /* 移除内边距 */
-            margin: 0; /* 移除外边距 */
-            display: flex; /* 使用弹性布局 */
-            justify-content: center; /* 水平居中 */
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex; /* 桌面端水平排列 */
+            justify-content: center;
+            flex-wrap: wrap; /* 允许换行 */
         }
         
-        /* 导航栏列表项样式 */
         nav li {
-            margin: 0 15px; /* 左右外边距 */
+            margin: 0;
+            flex: 1; /* 等分宽度 */
+            min-width: 80px; /* 最小宽度 */
+            text-align: center;
         }
         
-        /* 导航链接样式 */
         nav a {
-            color: white; /* 文字颜色 */
-            text-decoration: none; /* 移除下划线 */
-            padding: 8px 16px; /* 内边距 */
-            border-radius: 4px; /* 圆角边框 */
-            transition: background-color 0.3s; /* 背景色过渡动画 */
+            color: white;
+            text-decoration: none;
+            padding: 15px 10px; /* 增加触摸区域 */
+            border-radius: 0; /* 移除圆角 */
+            transition: all 0.3s;
+            display: block; /* 填充整个li区域 */
+            font-size: 15px; /* 移动端适当减小字体 */
+            font-weight: 500; /* 中等字重 */
         }
         
-        /* 导航链接悬停效果 */
-        nav a:hover {
-            background-color: #555; /* 悬停时背景色 */
-        }
-        
-        /* 页面容器样式 - 初始隐藏 */
-        .page {
-            display: none; /* 默认隐藏所有页面 */
-            animation: fadeIn 0.5s; /* 淡入动画 */
-            padding: 20px; /* 内边距 */
-        }
-        
-        /* 活动页面样式 - 显示 */
-        .page.active {
-            display: block; /* 显示活动页面 */
-        }
-        
-        /* 淡入动画定义 */
-        @keyframes fadeIn {
-            from { opacity: 0; } /* 从完全透明开始 */
-            to { opacity: 1; } /* 到完全不透明结束 */
+        nav a:hover, nav a.active {
+            background-color: #3498db; /* 悬停/激活状态 */
+            color: white;
         }
         
         /* 主容器样式 */
         .container {
-            max-width: 800px; /* 最大宽度 */
-            margin: 0 auto; /* 水平居中 */
+            max-width: 100%; /* 移动端使用全宽 */
+            margin: 0 auto;
+            padding: 0 15px; /* 移动端左右内边距 */
         }
         
-        /* 下载按钮样式 */
+        /* 页面容器样式 */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease-out; /* 平滑动画 */
+            padding: 15px; /* 移动端减少内边距 */
+            background-color: white;
+            border-radius: 10px; /* 圆角 */
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08); /* 轻微阴影 */
+            margin-bottom: 20px; /* 底部间距 */
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* 淡入动画定义 */
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                transform: translateY(10px); /* 轻微上移动画 */
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 标题样式 - 移动端优化 */
+        h1 {
+            font-size: 24px; /* 移动端标题大小 */
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2c3e50; /* 深色标题 */
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        
+        h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+        
+        /* 段落样式 */
+        p {
+            margin-bottom: 15px;
+            font-size: 16px; /* 移动端基础字体大小 */
+            line-height: 1.6;
+        }
+        
+        /* 下载按钮样式 - 移动端优化 */
+        .download-section {
+            display: flex;
+            flex-direction: column; /* 移动端垂直排列 */
+            gap: 12px; /* 按钮间距 */
+            margin-top: 20px;
+        }
+        
         .download-btn {
-            display: inline-block; /* 行内块元素 */
-            background: #007bff; /* 背景色 */
-            color: white; /* 文字颜色 */
-            padding: 10px 20px; /* 内边距 */
-            text-decoration: none; /* 移除下划线 */
-            border-radius: 5px; /* 圆角边框 */
-            margin: 10px 5px; /* 外边距 */
-            transition: background-color 0.3s; /* 背景色过渡动画 */
+            display: block; /* 移动端块级显示 */
+            background: linear-gradient(135deg, #007bff, #0056b3); /* 渐变背景 */
+            color: white;
+            padding: 14px 20px; /* 增大触摸区域 */
+            text-decoration: none;
+            border-radius: 8px; /* 圆角 */
+            margin: 5px 0; /* 垂直间距 */
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,123,255,0.2);
         }
         
-        /* 下载按钮悬停效果 */
         .download-btn:hover {
-            background: #0056b3; /* 悬停时背景色 */
+            background: linear-gradient(135deg, #0056b3, #004494);
+            transform: translateY(-2px); /* 悬停上浮效果 */
+            box-shadow: 0 6px 12px rgba(0,123,255,0.3);
         }
         
         /* 侯得屋页面链接样式 */
         .houdewu-link {
-            display: inline-block; /* 行内块元素 */
-            background: #28a745; /* 背景色 */
-            color: white; /* 文字颜色 */
-            padding: 15px 25px; /* 内边距 */
-            text-decoration: none; /* 移除下划线 */
-            border-radius: 8px; /* 圆角边框 */
-            font-size: 18px; /* 字体大小 */
-            margin: 20px 0; /* 上下外边距 */
-            transition: all 0.3s; /* 所有属性过渡动画 */
+            display: block;
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+            padding: 18px 25px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 18px;
+            margin: 20px 0;
+            transition: all 0.3s;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(40,167,69,0.2);
         }
         
-        /* 侯得屋链接悬停效果 */
         .houdewu-link:hover {
-            background: #218838; /* 悬停时背景色 */
-            transform: scale(1.05); /* 悬停时轻微放大 */
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(40,167,69,0.3);
+        }
+        
+        /* 图片库样式 - 移动端优化 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 移动端较小列宽 */
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .gallery-item {
+            background: #f8f9fa;
+            height: 120px; /* 移动端较小高度 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid #e9ecef; /* 添加边框 */
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-size: 14px; /* 较小字体 */
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background: #e9ecef;
+        }
+        
+        /* 移动端专属样式 - 媒体查询 */
+        @media (max-width: 768px) {
+            body {
+                padding: 0; /* 移动端移除body内边距 */
+            }
+            
+            /* 导航栏移动端样式 */
+            .menu-toggle {
+                display: block; /* 显示汉堡菜单 */
+            }
+            
+            nav ul {
+                display: none; /* 默认隐藏导航菜单 */
+                flex-direction: column; /* 垂直排列 */
+                width: 100%;
+            }
+            
+            nav ul.active {
+                display: flex; /* 激活时显示 */
+            }
+            
+            nav li {
+                width: 100%;
+                text-align: left;
+                border-bottom: 1px solid rgba(255,255,255,0.1); /* 分隔线 */
+            }
+            
+            nav a {
+                padding: 18px 20px; /* 增大触摸区域 */
+                font-size: 16px;
+            }
+            
+            /* 容器内边距调整 */
+            .container {
+                padding: 0 12px;
+            }
+            
+            /* 页面内边距调整 */
+            .page {
+                padding: 20px 15px;
+                margin-bottom: 15px;
+                border-radius: 8px;
+            }
+            
+            /* 标题大小调整 */
+            h1 {
+                font-size: 22px;
+            }
+            
+            h3 {
+                font-size: 18px;
+            }
+            
+            /* 图片库单列显示 */
+            .gallery-grid {
+                grid-template-columns: 1fr; /* 单列布局 */
+                gap: 10px;
+            }
+            
+            .gallery-item {
+                height: 100px;
+            }
+            
+            /* 下载按钮全宽显示 */
+            .download-btn {
+                width: 100%;
+                margin: 8px 0;
+            }
+            
+            .houdewu-link {
+                width: 100%;
+                padding: 20px 15px;
+                font-size: 17px;
+            }
+        }
+        
+        /* 平板设备优化 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                max-width: 90%;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+        
+        /* 桌面端优化 */
+        @media (min-width: 1025px) {
+            .container {
+                max-width: 900px; /* 限制最大宽度 */
+            }
+            
+            .download-section {
+                flex-direction: row; /* 桌面端水平排列 */
+                flex-wrap: wrap; /* 允许换行 */
+            }
+            
+            .download-btn {
+                flex: 1; /* 等分宽度 */
+                min-width: 200px; /* 最小宽度 */
+                margin: 8px;
+            }
+        }
+        
+        /* 防止极窄屏幕的溢出 */
+        @media (max-width: 350px) {
+            .container {
+                padding: 0 8px;
+            }
+            
+            .page {
+                padding: 15px 10px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .download-btn, .houdewu-link {
+                font-size: 15px;
+                padding: 16px 12px;
+            }
+        }
+        
+        /* 高对比度模式支持 */
+        @media (prefers-contrast: high) {
+            body {
+                background-color: white;
+            }
+            
+            .page {
+                border: 2px solid #333;
+            }
+            
+            nav {
+                background-color: black;
+            }
+        }
+        
+        /* 减少动画模式（对运动敏感用户） */
+        @media (prefers-reduced-motion: reduce) {
+            .page, .download-btn, .houdewu-link, .gallery-item, nav a {
+                animation: none;
+                transition: none;
+            }
         }
     </style>
 </head>
 <body>
     <!-- 导航栏 -->
     <nav>
-        <ul>
-            <!-- 首页导航项 -->
-            <li><a href="#" data-page="home">首页</a></li>
-            <!-- 下载页面导航项 -->
+        <!-- 汉堡菜单按钮（移动端显示） -->
+        <button class="menu-toggle" aria-label="打开菜单">☰</button>
+        
+        <ul id="nav-menu">
+            <li><a href="#" data-page="home" class="active">首页</a></li>
             <li><a href="#" data-page="downloads">下载</a></li>
-            <!-- 图库页面导航项 -->
             <li><a href="#" data-page="gallery">图库</a></li>
-            <!-- 侯得屋页面导航项 -->
             <li><a href="#" data-page="houdewu">侯得屋</a></li>
         </ul>
     </nav>
@@ -134,7 +381,8 @@
         <!-- 首页内容 -->
         <div id="home" class="page active">
             <h1>欢迎来到我的网站</h1>
-            <p>这是一个单页面导航网站。</p>
+            <p>这是一个单页面导航网站，已针对移动设备优化。</p>
+            <p>在手机上，点击左上角的菜单按钮 ☰ 可以展开/收起导航菜单。</p>
             <p>使用上方的导航菜单在不同页面之间切换。</p>
         </div>
 
@@ -147,15 +395,18 @@
                 <a href="downloads/1.mp3" download class="download-btn">
                     🎵 下载音乐
                 </a>
-                <!-- 用户指南下载链接 -->
-                <a href="documents/ edge.apk" download class="download-btn">
-                    ⬇️ 下载apk
+                <!-- APK下载链接 -->
+                <a href="documents/edge.apk" download class="download-btn">
+                    ⬇️ 下载APK
                 </a>
                 <!-- 示例文件下载链接 -->
                 <a href="downloads/sample.txt" download class="download-btn">
                     📄 示例文件
                 </a>
             </div>
+            <p style="margin-top: 20px; color: #666; font-size: 14px;">
+                提示：确保您的设备有足够的存储空间，并在安全的环境下下载文件。
+            </p>
         </div>
 
         <!-- 侯得屋页面内容 -->
@@ -166,8 +417,8 @@
             <a href="1.html" class="houdewu-link">
                 点击进入积分系统（由侯得屋提供）
             </a>
-            <p style="margin-top: 20px; color: #666;">
-                注意：点击此链接将跳转到独立的积分系统页面
+            <p style="margin-top: 20px; color: #666; font-size: 14px;">
+                注意：点击此链接将跳转到独立的积分系统页面。
             </p>
         </div>
 
@@ -176,18 +427,24 @@
             <h1>图片库</h1>
             <p>这里可以展示图片等内容。</p>
             <!-- 图片网格布局 -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
-                <!-- 图片占位符1 -->
-                <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <div class="gallery-grid">
+                <div class="gallery-item">
                     📷 图片1
                 </div>
-                <!-- 图片占位符2 -->
-                <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                <div class="gallery-item">
                     📷 图片2
                 </div>
-                <!-- 图片占位符3 -->
-                <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                <div class="gallery-item">
                     📷 图片3
+                </div>
+                <div class="gallery-item">
+                    📷 图片4
+                </div>
+                <div class="gallery-item">
+                    📷 图片5
+                </div>
+                <div class="gallery-item">
+                    📷 图片6
                 </div>
             </div>
         </div>
@@ -197,28 +454,83 @@
     <script>
         // 当文档加载完成后执行
         document.addEventListener('DOMContentLoaded', function() {
+            const navMenu = document.getElementById('nav-menu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            // 汉堡菜单点击事件
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    this.setAttribute('aria-label', 
+                        navMenu.classList.contains('active') ? '关闭菜单' : '打开菜单');
+                    this.textContent = navMenu.classList.contains('active') ? '✕' : '☰';
+                });
+            }
+            
             // 为所有导航链接添加点击事件监听器
             document.querySelectorAll('nav a').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    e.preventDefault(); // 阻止链接默认行为
-                    const pageId = this.getAttribute('data-page'); // 获取目标页面ID
-                    switchPage(pageId); // 切换到目标页面
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
                     
-                    // 更新URL哈希（可选，便于分享链接）
+                    // 移动端：点击链接后关闭菜单
+                    if (window.innerWidth <= 768) {
+                        navMenu.classList.remove('active');
+                        menuToggle.textContent = '☰';
+                        menuToggle.setAttribute('aria-label', '打开菜单');
+                    }
+                    
+                    switchPage(pageId);
+                    
+                    // 更新URL哈希（便于分享链接）
                     history.pushState(null, null, '#' + pageId);
                 });
             });
             
             // 处理浏览器前进后退按钮
             window.addEventListener('popstate', function() {
-                // 从URL哈希获取页面ID，默认为home
                 const pageId = window.location.hash.substring(1) || 'home';
-                switchPage(pageId); // 切换到对应页面
+                switchPage(pageId);
             });
             
             // 页面加载时检查URL哈希
             const initialPage = window.location.hash.substring(1) || 'home';
-            switchPage(initialPage); // 切换到初始页面
+            switchPage(initialPage);
+            
+            // 点击页面其他区域关闭菜单（移动端）
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && 
+                    !e.target.closest('nav') && 
+                    navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    menuToggle.textContent = '☰';
+                    menuToggle.setAttribute('aria-label', '打开菜单');
+                }
+            });
+            
+            // 触摸滑动支持（可选功能）
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, {passive: true});
+            
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, {passive: true});
+            
+            function handleSwipe() {
+                const swipeThreshold = 50; // 滑动阈值
+                const swipeDistance = touchEndX - touchStartX;
+                
+                if (Math.abs(swipeDistance) > swipeThreshold) {
+                    // 简单示例：左滑右滑切换页面
+                    // 可以根据需要扩展此功能
+                    console.log('检测到滑动，距离：' + swipeDistance);
+                }
+            }
         });
 
         // 页面切换函数
@@ -228,22 +540,48 @@
                 page.classList.remove('active');
             });
             
+            // 移除所有导航链接的active类
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+                link.style.backgroundColor = '';
+            });
+            
             // 激活目标页面
             const targetPage = document.getElementById(pageId);
             if (targetPage) {
                 targetPage.classList.add('active');
                 
-                // 更新导航激活状态（可选）
-                document.querySelectorAll('nav a').forEach(link => {
-                    link.style.backgroundColor = ''; // 清除所有链接的背景色
-                });
-                // 为当前活动链接添加背景色
+                // 激活对应的导航链接
                 const activeLink = document.querySelector(`nav a[data-page="${pageId}"]`);
                 if (activeLink) {
-                    activeLink.style.backgroundColor = '#007bff';
+                    activeLink.classList.add('active');
+                    activeLink.style.backgroundColor = '#3498db';
                 }
             }
+            
+            // 滚动到页面顶部（移动端体验优化）
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
+        
+        // 窗口大小改变时调整布局
+        window.addEventListener('resize', function() {
+            // 如果从移动端切换到桌面端，确保菜单正常显示
+            if (window.innerWidth > 768) {
+                const navMenu = document.getElementById('nav-menu');
+                const menuToggle = document.querySelector('.menu-toggle');
+                
+                navMenu.classList.remove('active');
+                navMenu.style.display = 'flex';
+                
+                if (menuToggle) {
+                    menuToggle.textContent = '☰';
+                    menuToggle.setAttribute('aria-label', '打开菜单');
+                }
+            }
+        });
     </script>
 </body>
 </html>
