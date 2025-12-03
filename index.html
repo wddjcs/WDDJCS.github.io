@@ -4,44 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>wddjcs的网站</title>
-    <!-- 条件加载 Eruda (URL参数方式) -->
+
+    <!-- ========== 【核心】Eruda 条件加载脚本 ========== -->
+    <!-- 注意：此脚本必须紧跟在title之后，任何其他style或script之前 -->
     <script>
         (function() {
-            alert('当前URL：' + window.location.href + '\n参数部分：' + window.location.search);
-            // 1. 定义检查函数：检查URL中是否包含 eruda=true
+            'use strict'; // 启用严格模式，避免隐蔽错误
+            console.log('[Eruda] 条件加载脚本开始执行...');
+            
+            // 1. 健壮的参数检查函数（兼容 /? 和 ? 等情况）
             function shouldLoadEruda() {
-                // 方法3（额外保险）：检查哈希（#）后的参数，因为你的单页应用使用了hash路由
-                var hash = window.location.hash;
-                if (hash.indexOf('eruda=true') > -1) {
-                    console.log('[Eruda] 在哈希片段中检测到参数。');
-                    return true;
-                }
-    
-                console.log('[Eruda] 未检测到激活参数。');
-                return false;
+                var params = new URLSearchParams(window.location.search);
+                return params.get('eruda') === 'true';
             }
-        
-            // 2. 如果不满足条件，立即退出，不加载任何东西
-            if (!shouldLoadEruda()) return;
-        
-            // 3. 满足条件时，动态创建脚本标签加载Eruda
+            
+            // 2. 执行检查
+            if (!shouldLoadEruda()) {
+                console.log('[Eruda] 条件未满足，退出加载。');
+                return; // 这是最关键的一行：不满足条件就停止执行
+            }
+            console.log('[Eruda] 条件满足，开始加载...');
+            
+            // 3. 动态加载Eruda库
             var script = document.createElement('script');
+            // 可尝试的CDN源（如果第一个失败，请取消注释另一个试试）
             script.src = 'https://cdn.jsdelivr.net/npm/eruda';
-            // 将脚本添加到body的末尾，确保不阻塞页面渲染
+            // script.src = 'https://unpkg.com/eruda'; // 备用源
+            
+            script.onload = function() {
+                if (typeof eruda !== 'undefined') {
+                    eruda.init();
+                    console.log('[Eruda] ✅ 初始化成功！请查看页面右下角绿色按钮。');
+                }
+            };
+            script.onerror = function() {
+                console.error('[Eruda] ❌ 脚本加载失败，请检查网络或CDN。');
+            };
+            
+            // 添加到body，开始加载
             document.body.appendChild(script);
-        
-            // 4. 脚本加载完成后，初始化Eruda
-            script.onload = function () {
-                eruda.init();
-                console.log('Eruda 调试工具已通过URL参数激活。');
-            };
-        
-            // 5. 处理加载失败的情况
-            script.onerror = function () {
-                console.error('Eruda 脚本加载失败，请检查网络或CDN地址。');
-            };
+            
         })();
     </script>
+    <!-- ========== Eruda 脚本结束 ========== -->
     <style>
         /* 基础页面样式 */
         * {
