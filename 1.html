@@ -465,10 +465,16 @@
         </div>
     </main>
 
-    <!-- 页脚 -->
+    <!-- 页脚 - 已添加数据导入导出按钮 -->
     <footer class="bg-primary text-white py-3 mt-auto">
         <div class="container mx-auto px-4 text-center">
             <div class="footer-buttons flex justify-center space-x-4">
+                <button id="export-data-btn" class="text-xs bg-secondary text-white py-1 px-3 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fa fa-download mr-1"></i>导出数据
+                </button>
+                <button id="import-data-btn" class="text-xs bg-secondary text-white py-1 px-3 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fa fa-upload mr-1"></i>导入数据
+                </button>
                 <button id="quick-actions-manage-btn" class="text-xs bg-secondary text-white py-1 px-3 rounded-lg hover:bg-gray-700 transition-colors">
                     <i class="fa fa-bolt mr-1"></i>管理快速操作
                 </button>
@@ -727,6 +733,9 @@
         <i id="toast-icon" class="fa fa-check-circle mr-2"></i>
         <span id="toast-message">操作成功</span>
     </div>
+
+    <!-- 隐藏的文件输入元素（用于导入数据） -->
+    <input type="file" id="file-import-input" accept=".json" style="display: none;">
 
     <script>
         // 初始化数据
@@ -1752,6 +1761,49 @@
             showToast('头像已更新', 'success');
         }
 
+        // 导出数据功能
+        function exportData() {
+            const dataStr = JSON.stringify(appData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            const date = new Date().toISOString().split('T')[0];
+            link.download = `积分系统备份_${date}.json`;
+            link.href = url;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            showToast('数据导出成功', 'success');
+        }
+
+        // 导入数据功能
+        function importData(file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const importedData = JSON.parse(event.target.result);
+                    
+                    // 基础数据验证
+                    if (!importedData.members || !importedData.rewards || !importedData.history) {
+                        throw new Error('文件格式不正确');
+                    }
+                    
+                    showConfirmation('导入数据', '这将覆盖当前所有数据，确定要继续吗？', () => {
+                        // 更新应用数据
+                        appData = importedData;
+                        saveData();
+                        renderAll();
+                        showToast('数据导入成功', 'success');
+                    });
+                } catch (error) {
+                    showToast('导入失败：文件格式错误', 'error');
+                    console.error('导入错误:', error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
         // 显示提示消息
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
@@ -2208,6 +2260,23 @@
                 document.getElementById('add-quick-action-modal').classList.add('hidden');
                 document.getElementById('quick-actions-modal').classList.remove('hidden');
                 currentQuickActionIndex = null;
+            });
+            
+            // 导出数据按钮
+            document.getElementById('export-data-btn').addEventListener('click', exportData);
+            
+            // 导入数据按钮
+            document.getElementById('import-data-btn').addEventListener('click', function() {
+                document.getElementById('file-import-input').click();
+            });
+            
+            // 文件输入事件监听
+            document.getElementById('file-import-input').addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    importData(e.target.files[0]);
+                    // 重置input，以便可以再次选择同一文件
+                    this.value = '';
+                }
             });
         });
     </script>
