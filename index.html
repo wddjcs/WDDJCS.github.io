@@ -1,29 +1,529 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>wddjcs的网站</title>
     <!-- 使用最直接、无条件的加载方式 -->
     <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
     <script>
-        // 页面加载后立即初始化
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log('页面已加载，正在初始化Eruda...');
-            if (typeof eruda !== 'undefined') {
-                eruda.init();
-                console.log('Eruda 初始化成功！');
-            } else {
-                console.error('Eruda 库加载失败！');
-            }
-        });
-    </script>
     <style>
-        body { font-family: sans-serif; padding: 20px; }
+        /* 基础页面样式 */
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif, "PingFang SC", "Microsoft YaHei";
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            color: #333;
+            background-color: #f8f9fa;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* 导航栏基础样式 */
+        nav {
+            background-color: #2c3e50;
+            padding: 0;
+            margin-bottom: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-height: 60px;
+        }
+        
+        /* 汉堡菜单按钮 - 默认隐藏，移动端显示 */
+        .hamburger-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 10px;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001;
+        }
+        
+        /* 导航菜单 */
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        nav li {
+            margin: 0;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 20px 15px;
+            display: block;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        nav a:hover, nav a.active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        /* 主容器样式 */
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* 页面容器样式 */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* 淡入动画 */
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 标题样式 */
+        h1 {
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        
+        h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+        
+        /* 段落样式 */
+        p {
+            margin-bottom: 15px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        /* 下载区域样式 */
+        .download-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        /* 下载按钮样式 */
+        .download-btn {
+            display: block;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 5px 0;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,123,255,0.2);
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #004494);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,123,255,0.3);
+        }
+        
+        /* 侯得屋链接样式 */
+        .houdewu-link {
+            display: block;
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+            padding: 18px 25px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 18px;
+            margin: 20px 0;
+            transition: all 0.3s;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(40,167,69,0.2);
+        }
+        
+        .houdewu-link:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(40,167,69,0.3);
+        }
+        
+        /* 图片库样式 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .gallery-item {
+            background: #f8f9fa;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-size: 14px;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background: #e9ecef;
+        }
+        
+        /* ==================== 移动端样式 (≤768px) ==================== */
+        @media (max-width: 768px) {
+            /* 显示汉堡菜单按钮 */
+            .hamburger-menu {
+                display: block;
+            }
+            
+            /* 调整导航栏以容纳汉堡按钮 */
+            nav {
+                padding-right: 60px;
+            }
+            
+            /* 导航菜单默认隐藏 */
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: #2c3e50;
+                flex-direction: column;
+                z-index: 1000;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+            
+            /* 移动端激活的菜单 */
+            nav ul.mobile-active {
+                display: flex;
+            }
+            
+            /* 导航项样式 */
+            nav li {
+                width: 100%;
+                text-align: left;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            nav a {
+                padding: 18px 20px;
+            }
+            
+            /* 容器调整 */
+            .container {
+                padding: 0 12px;
+            }
+            
+            /* 页面调整 */
+            .page {
+                padding: 20px 15px;
+                margin-bottom: 15px;
+                border-radius: 8px;
+            }
+            
+            /* 标题调整 */
+            h1 {
+                font-size: 22px;
+            }
+            
+            /* 图片库单列显示 */
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .gallery-item {
+                height: 100px;
+            }
+            
+            /* 按钮全宽显示 */
+            .download-btn, .houdewu-link {
+                width: 100%;
+            }
+        }
+        
+        /* ==================== 桌面端样式 (>768px) ==================== */
+        @media (min-width: 769px) {
+            /* 桌面端强制显示水平导航菜单 */
+            nav ul {
+                display: flex !important;
+            }
+            
+            /* 桌面端强制隐藏汉堡按钮 */
+            .hamburger-menu {
+                display: none !important;
+            }
+            
+            /* 桌面端容器宽度限制 */
+            .container {
+                max-width: 900px;
+            }
+            
+            /* 桌面端下载按钮水平排列 */
+            .download-section {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .download-btn {
+                flex: 1;
+                min-width: 200px;
+                margin: 8px;
+            }
+        }
+        
+        /* 极窄屏幕适配 */
+        @media (max-width: 350px) {
+            .container {
+                padding: 0 8px;
+            }
+            
+            .page {
+                padding: 15px 10px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Eruda 基础测试页</h1>
-    <p>如果一切正常，页面右下角会出现一个绿色按钮。</p>
-    <p>如果没有，请打开浏览器的“网页检查器”（如果可用）查看控制台（Console）的错误信息。</p>
+    <!-- 导航栏 -->
+    <nav>
+        <!-- 汉堡菜单按钮（移动端显示） -->
+        <button class="hamburger-menu" id="hamburgerBtn" aria-label="导航菜单">☰</button>
+        
+        <!-- 导航菜单 -->
+        <ul id="mainNav">
+            <li><a href="#" data-page="home" class="active">首页</a></li>
+            <li><a href="#" data-page="downloads">下载</a></li>
+            <li><a href="#" data-page="gallery">图库</a></li>
+            <li><a href="#" data-page="houdewu">侯得屋</a></li>
+        </ul>
+    </nav>
+
+    <!-- 页面内容容器 -->
+    <div class="container">
+        <!-- 首页内容 -->
+        <div id="home" class="page active">
+            <h1>欢迎来到我的网站</h1>
+            <p>这是一个单页面导航网站，已针对移动设备优化。</p>
+            <p>在手机上，点击右上角的菜单按钮 ☰ 可以展开/收起导航菜单。</p>
+            <p>使用上方的导航菜单在不同页面之间切换。</p>
+        </div>
+
+        <!-- 下载页面内容 -->
+        <div id="downloads" class="page">
+            <h1>下载页面</h1>
+            <div class="download-section">
+                <h3>可用下载：</h3>
+                <a href="downloads/1.mp3" download class="download-btn">
+                    🎵 下载音乐
+                </a>
+                <a href="documents/edge.apk" download class="download-btn">
+                    ⬇️ 下载APK
+                </a>
+                <a href="downloads/sample.txt" download class="download-btn">
+                    📄 示例文件
+                </a>
+            </div>
+            <p style="margin-top: 20px; color: #666; font-size: 14px;">
+                提示：确保您的设备有足够的存储空间，并在安全的环境下下载文件。
+            </p>
+        </div>
+
+        <!-- 侯得屋页面内容 -->
+        <div id="houdewu" class="page">
+            <h1>侯得屋</h1>
+            <p>欢迎访问侯得屋提供的积分系统</p>
+            <a href="1.html" class="houdewu-link">
+                点击进入积分系统（由侯得屋提供）
+            </a>
+            <p style="margin-top: 20px; color: #666; font-size: 14px;">
+                注意：点击此链接将跳转到独立的积分系统页面。
+            </p>
+        </div>
+
+        <!-- 图库页面内容 -->
+        <div id="gallery" class="page">
+            <h1>图片库</h1>
+            <p>这里可以展示图片等内容。</p>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    📷 图片1
+                </div>
+                <div class="gallery-item">
+                    📷 图片2
+                </div>
+                <div class="gallery-item">
+                    📷 图片3
+                </div>
+                <div class="gallery-item">
+                    📷 图片4
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript代码 -->
+    <script>
+        // 当文档加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mainNav = document.getElementById('mainNav');
+            
+            // ==================== 汉堡菜单功能 ====================
+            if (hamburgerBtn && mainNav) {
+                // 点击汉堡按钮切换菜单显示/隐藏
+                hamburgerBtn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 阻止事件冒泡
+                    mainNav.classList.toggle('mobile-active');
+                    
+                    // 切换按钮图标
+                    if (mainNav.classList.contains('mobile-active')) {
+                        this.textContent = '✕';
+                        this.setAttribute('aria-label', '关闭菜单');
+                    } else {
+                        this.textContent = '☰';
+                        this.setAttribute('aria-label', '打开菜单');
+                    }
+                });
+                
+                // 点击导航链接后关闭菜单（仅限移动端）
+                mainNav.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        // 仅在移动端宽度且菜单打开时关闭
+                        if (window.innerWidth <= 768 && mainNav.classList.contains('mobile-active')) {
+                            mainNav.classList.remove('mobile-active');
+                            hamburgerBtn.textContent = '☰';
+                            hamburgerBtn.setAttribute('aria-label', '打开菜单');
+                        }
+                    });
+                });
+                
+                // 点击页面其他地方关闭菜单（仅限移动端）
+                document.addEventListener('click', function(event) {
+                    if (window.innerWidth <= 768 && 
+                        mainNav.classList.contains('mobile-active') &&
+                        !event.target.closest('nav')) {
+                        mainNav.classList.remove('mobile-active');
+                        hamburgerBtn.textContent = '☰';
+                        hamburgerBtn.setAttribute('aria-label', '打开菜单');
+                    }
+                });
+                
+                // 窗口大小变化时重置菜单状态
+                window.addEventListener('resize', function() {
+                    // 从移动端切换到桌面端时
+                    if (window.innerWidth > 768) {
+                        mainNav.classList.remove('mobile-active');
+                        hamburgerBtn.textContent = '☰';
+                        hamburgerBtn.setAttribute('aria-label', '打开菜单');
+                    }
+                });
+            }
+            
+            // ==================== 页面切换功能 ====================
+            // 为所有导航链接添加点击事件监听器
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    switchPage(pageId);
+                    
+                    // 更新URL哈希（便于分享链接）
+                    history.pushState(null, null, '#' + pageId);
+                });
+            });
+            
+            // 处理浏览器前进后退按钮
+            window.addEventListener('popstate', function() {
+                const pageId = window.location.hash.substring(1) || 'home';
+                switchPage(pageId);
+            });
+            
+            // 页面加载时检查URL哈希
+            const initialPage = window.location.hash.substring(1) || 'home';
+            switchPage(initialPage);
+        });
+
+        // 页面切换函数
+        function switchPage(pageId) {
+            // 移除所有页面的active类
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // 移除所有导航链接的active类
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // 激活目标页面
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                
+                // 激活对应的导航链接
+                const activeLink = document.querySelector(`nav a[data-page="${pageId}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            }
+            
+            // 滚动到页面顶部（移动端体验优化）
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
 </html>
