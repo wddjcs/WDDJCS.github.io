@@ -4,18 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>wddjcs的网站</title>
-    <!-- 使用最直接、无条件的加载方式 -->
-    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <!-- 条件加载 Eruda (URL参数方式) -->
     <script>
-        // 页面加载完成后初始化Eruda
-        window.addEventListener('DOMContentLoaded', function() {
-            if (typeof eruda !== 'undefined') {
-                eruda.init();
-                console.log('Eruda 调试工具已加载！右下角应有绿色按钮。');
-            } else {
-                console.error('Eruda 库加载失败，请检查网络或CDN。');
+        (function() {
+            // 1. 定义检查函数：检查URL中是否包含 eruda=true
+            function shouldLoadEruda() {
+                return window.location.search.indexOf('eruda=true') > -1;
             }
-        });
+        
+            // 2. 如果不满足条件，立即退出，不加载任何东西
+            if (!shouldLoadEruda()) return;
+        
+            // 3. 满足条件时，动态创建脚本标签加载Eruda
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/eruda';
+            // 将脚本添加到body的末尾，确保不阻塞页面渲染
+            document.body.appendChild(script);
+        
+            // 4. 脚本加载完成后，初始化Eruda
+            script.onload = function () {
+                eruda.init();
+                console.log('Eruda 调试工具已通过URL参数激活。');
+            };
+        
+            // 5. 处理加载失败的情况
+            script.onerror = function () {
+                console.error('Eruda 脚本加载失败，请检查网络或CDN地址。');
+            };
+        })();
     </script>
     <style>
         /* 基础页面样式 */
