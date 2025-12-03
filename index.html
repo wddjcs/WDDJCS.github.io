@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>wddjcs的网站</title>
+    <script>
+        (function() {
+            // 检查URL中是否有 eruda=true 的标记
+            if (!/eruda=true/.test(window.location)) return;
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/eruda';
+            document.body.appendChild(script);
+            script.onload = function () { eruda.init(); }
+        })();
+    </script>
     <style>
         /* 基础页面样式 */
         * {
