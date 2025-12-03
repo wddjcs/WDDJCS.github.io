@@ -7,6 +7,7 @@
     <!-- 条件加载 Eruda (URL参数方式) -->
     <script>
         (function() {
+            alert('当前URL：' + window.location.href + '\n参数部分：' + window.location.search);
             // 1. 定义检查函数：检查URL中是否包含 eruda=true
             function shouldLoadEruda() {
                 // 方法3（额外保险）：检查哈希（#）后的参数，因为你的单页应用使用了hash路由
