@@ -9,12 +9,16 @@
         (function() {
             // 1. 定义检查函数：检查URL中是否包含 eruda=true
             function shouldLoadEruda() {
-                // 方法2（备用）：检查URL中是否包含 eruda=true 模式，兼容 /? 和 ? 两种情况
-                var search = window.location.search;
-                if (search.indexOf('eruda=true') > -1) {
-                    console.log('[Eruda] 通过字符串匹配检测到参数。');
+                // 方法3（额外保险）：检查哈希（#）后的参数，因为你的单页应用使用了hash路由
+                var hash = window.location.hash;
+                if (hash.indexOf('eruda=true') > -1) {
+                    console.log('[Eruda] 在哈希片段中检测到参数。');
                     return true;
                 }
+    
+                console.log('[Eruda] 未检测到激活参数。');
+                return false;
+            }
         
             // 2. 如果不满足条件，立即退出，不加载任何东西
             if (!shouldLoadEruda()) return;
