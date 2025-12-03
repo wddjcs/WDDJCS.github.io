@@ -7,6 +7,16 @@
     <!-- 使用最直接、无条件的加载方式 -->
     <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
     <script>
+        // 页面加载完成后初始化Eruda
+        window.addEventListener('DOMContentLoaded', function() {
+            if (typeof eruda !== 'undefined') {
+                eruda.init();
+                console.log('Eruda 调试工具已加载！右下角应有绿色按钮。');
+            } else {
+                console.error('Eruda 库加载失败，请检查网络或CDN。');
+            }
+        });
+    </script>
     <style>
         /* 基础页面样式 */
         * {
