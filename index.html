@@ -9,10 +9,10 @@
         (function() {
             // 1. 定义检查函数：检查URL中是否包含 eruda=true
             function shouldLoadEruda() {
-                // 方法1（推荐）：使用现代的 URLSearchParams API，最规范
-                var urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.has('eruda') && urlParams.get('eruda') === 'true') {
-                    console.log('[Eruda] 通过 URLSearchParams 检测到参数。');
+                // 方法2（备用）：检查URL中是否包含 eruda=true 模式，兼容 /? 和 ? 两种情况
+                var search = window.location.search;
+                if (search.indexOf('eruda=true') > -1) {
+                    console.log('[Eruda] 通过字符串匹配检测到参数。');
                     return true;
                 }
         
