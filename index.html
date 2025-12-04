@@ -211,6 +211,149 @@
             background: #e9ecef;
         }
         
+        /* 文件管理页面样式 */
+        .files-container {
+            margin-top: 20px;
+        }
+        
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s;
+        }
+        
+        .file-item:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+        
+        .file-icon {
+            font-size: 24px;
+        }
+        
+        .file-name {
+            font-weight: 500;
+            word-break: break-all;
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .file-action-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .download-action {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .download-action:hover {
+            background-color: #0056b3;
+        }
+        
+        .delete-action {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .delete-action:hover {
+            background-color: #c82333;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .refresh-btn:hover {
+            background: linear-gradient(135deg, #5a6268, #4e555b);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(108,117,125,0.2);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #6c757d;
+        }
+        
+        .empty-files {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #dee2e6;
+        }
+        
+        .empty-files-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        /* 删除请求状态样式 */
+        .delete-request-status {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
+        
+        .delete-request-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .delete-request-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
         /* ==================== 移动端样式 (≤768px) ==================== */
         @media (max-width: 768px) {
             /* 显示汉堡菜单按钮 */
@@ -283,6 +426,23 @@
             .download-btn, .houdewu-link {
                 width: 100%;
             }
+            
+            /* 文件项移动端适配 */
+            .file-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .file-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            
+            .file-action-btn {
+                flex: 1;
+                text-align: center;
+            }
         }
         
         /* ==================== 桌面端样式 (>768px) ==================== */
@@ -328,6 +488,11 @@
             h1 {
                 font-size: 20px;
             }
+            
+            .file-action-btn {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -341,6 +506,7 @@
         <ul id="mainNav">
             <li><a href="#" data-page="home" class="active">首页</a></li>
             <li><a href="#" data-page="downloads">下载</a></li>
+            <li><a href="#" data-page="files">文件</a></li>
             <li><a href="#" data-page="gallery">图库</a></li>
             <li><a href="#" data-page="houdewu">侯得屋</a></li>
         </ul>
@@ -373,6 +539,31 @@
             </div>
             <p style="margin-top: 20px; color: #666; font-size: 14px;">
                 提示：确保您的设备有足够的存储空间，并在安全的环境下下载文件。
+            </p>
+        </div>
+
+        <!-- 文件管理页面内容 -->
+        <div id="files" class="page">
+            <h1>文件管理</h1>
+            <p>这里显示 <code>download</code> 目录中的文件，您可以下载文件或提交删除请求。</p>
+            
+            <div id="deleteRequestStatus" class="delete-request-status"></div>
+            
+            <button class="refresh-btn" id="refreshFiles">
+                🔄 刷新文件列表
+            </button>
+            
+            <div class="files-container">
+                <div id="fileListContainer">
+                    <!-- 文件列表将在这里动态生成 -->
+                    <div class="loading">
+                        正在加载文件列表...
+                    </div>
+                </div>
+            </div>
+            
+            <p style="margin-top: 20px; color: #666; font-size: 14px;">
+                注意：删除操作不会立即删除文件，而是向管理员提交删除请求。管理员会定期处理这些请求。
             </p>
         </div>
 
@@ -489,6 +680,217 @@
             // 页面加载时检查URL哈希
             const initialPage = window.location.hash.substring(1) || 'home';
             switchPage(initialPage);
+            
+            // ==================== 文件管理功能 ====================
+            const refreshBtn = document.getElementById('refreshFiles');
+            const fileListContainer = document.getElementById('fileListContainer');
+            const deleteRequestStatus = document.getElementById('deleteRequestStatus');
+            
+            // 文件类型图标映射
+            const fileIcons = {
+                'pdf': '📕',
+                'doc': '📘',
+                'docx': '📘',
+                'txt': '📄',
+                'jpg': '🖼️',
+                'jpeg': '🖼️',
+                'png': '🖼️',
+                'gif': '🖼️',
+                'mp3': '🎵',
+                'mp4': '🎬',
+                'avi': '🎬',
+                'mov': '🎬',
+                'zip': '📦',
+                'rar': '📦',
+                '7z': '📦',
+                'exe': '⚙️',
+                'msi': '⚙️',
+                'apk': '📱',
+                'dmg': '💿',
+                'default': '📁'
+            };
+            
+            // 获取文件图标
+            function getFileIcon(filename) {
+                const extension = filename.split('.').pop().toLowerCase();
+                return fileIcons[extension] || fileIcons['default'];
+            }
+            
+            // 从GitHub API获取文件列表
+            async function fetchFiles() {
+                try {
+                    // 显示加载状态
+                    fileListContainer.innerHTML = '<div class="loading">正在加载文件列表...</div>';
+                    
+                    // GitHub API URL - 获取download目录的内容
+                    const apiUrl = 'https://api.github.com/repos/wddjcs/WDDJCS.github.io/contents/download';
+                    
+                    // 发送请求
+                    const response = await fetch(apiUrl);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // 过滤出文件（排除目录和Delete.txt文件）
+                    const files = data.filter(item => item.type === 'file' && item.name !== 'Delete.txt');
+                    
+                    // 渲染文件列表
+                    renderFileList(files);
+                    
+                } catch (error) {
+                    console.error('获取文件列表失败:', error);
+                    fileListContainer.innerHTML = `
+                        <div class="empty-files">
+                            <span class="empty-files-icon">⚠️</span>
+                            <p>加载文件列表失败</p>
+                            <p>错误信息: ${error.message}</p>
+                            <p>请检查网络连接后重试。</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            // 提交删除请求到Delete.txt
+            async function submitDeleteRequest(filename) {
+                try {
+                    // 显示处理状态
+                    showDeleteRequestStatus('正在提交删除请求...', 'info');
+                    
+                    // 获取当前时间
+                    const now = new Date();
+                    const timestamp = now.toISOString();
+                    const localTime = now.toLocaleString('zh-CN');
+                    
+                    // 删除请求内容
+                    const deleteRequest = `[${timestamp}] 请求删除文件: ${filename} (提交时间: ${localTime})`;
+                    
+                    // 由于GitHub API需要认证才能写入，我们使用一个简单的解决方案：
+                    // 通过GitHub web界面链接，让用户手动提交Issue
+                    // 或者，我们可以使用一个公共的API端点（如果您有的话）
+                    
+                    // 方案1: 跳转到GitHub Issues页面（推荐，无需后端）
+                    const issueTitle = `删除文件请求: ${filename}`;
+                    const issueBody = `文件名: ${filename}\n\n时间: ${localTime}\n\n请管理员手动删除此文件。`;
+                    const issueUrl = `https://github.com/wddjcs/WDDJCS.github.io/issues/new?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(issueBody)}`;
+                    
+                    // 打开新窗口跳转到GitHub Issues
+                    window.open(issueUrl, '_blank');
+                    
+                    // 显示成功消息
+                    showDeleteRequestStatus(`已提交删除 ${filename} 的请求。请在新打开的GitHub页面中提交Issue。`, 'success');
+                    
+                    return true;
+                    
+                } catch (error) {
+                    console.error('提交删除请求失败:', error);
+                    showDeleteRequestStatus(`提交删除请求失败: ${error.message}`, 'error');
+                    return false;
+                }
+            }
+            
+            // 显示删除请求状态
+            function showDeleteRequestStatus(message, type) {
+                if (!deleteRequestStatus) return;
+                
+                deleteRequestStatus.textContent = message;
+                deleteRequestStatus.className = 'delete-request-status';
+                
+                if (type === 'success') {
+                    deleteRequestStatus.classList.add('delete-request-success');
+                } else if (type === 'error') {
+                    deleteRequestStatus.classList.add('delete-request-error');
+                }
+                
+                deleteRequestStatus.style.display = 'block';
+                
+                // 3秒后自动隐藏消息
+                setTimeout(() => {
+                    deleteRequestStatus.style.display = 'none';
+                }, 5000);
+            }
+            
+            // 渲染文件列表
+            function renderFileList(files) {
+                if (files.length === 0) {
+                    fileListContainer.innerHTML = `
+                        <div class="empty-files">
+                            <span class="empty-files-icon">📂</span>
+                            <p>没有找到文件</p>
+                            <p><code>download</code> 目录为空</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '<div class="file-list">';
+                
+                files.forEach(file => {
+                    const icon = getFileIcon(file.name);
+                    const downloadUrl = file.download_url;
+                    
+                    html += `
+                        <div class="file-item">
+                            <div class="file-info">
+                                <span class="file-icon">${icon}</span>
+                                <span class="file-name">${file.name}</span>
+                            </div>
+                            <div class="file-actions">
+                                <a href="${downloadUrl}" download class="file-action-btn download-action">
+                                    下载
+                                </a>
+                                <button class="file-action-btn delete-action delete-btn" data-filename="${file.name}">
+                                    删除
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                fileListContainer.innerHTML = html;
+                
+                // 为删除按钮添加事件监听
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const filename = this.getAttribute('data-filename');
+                        handleDeleteRequest(filename);
+                    });
+                });
+            }
+            
+            // 处理删除请求
+            function handleDeleteRequest(filename) {
+                if (confirm(`确定要提交删除 ${filename} 的请求吗？\n\n注意：文件不会立即删除，而是向管理员提交删除请求。管理员会定期处理这些请求。`)) {
+                    submitDeleteRequest(filename);
+                }
+            }
+            
+            // 刷新按钮点击事件
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', fetchFiles);
+            }
+            
+            // 当切换到文件页面时自动加载文件列表
+            function handlePageSwitch(pageId) {
+                if (pageId === 'files') {
+                    fetchFiles();
+                }
+            }
+            
+            // 修改页面切换函数，添加文件页面加载
+            const originalSwitchPage = window.switchPage;
+            window.switchPage = function(pageId) {
+                originalSwitchPage(pageId);
+                handlePageSwitch(pageId);
+            };
+            
+            // 初始加载文件页面（如果当前是文件页面）
+            if (initialPage === 'files') {
+                fetchFiles();
+            }
         });
 
         // 页面切换函数
