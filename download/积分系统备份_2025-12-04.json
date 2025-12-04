@@ -1,0 +1,832 @@
+{
+  "members": [
+    {
+      "id": 3,
+      "name": "1",
+      "points": 0,
+      "experience": 80,
+      "seasonExperience": 0,
+      "avatarUrl": null,
+      "avatarColor": "pink"
+    },
+    {
+      "id": 4,
+      "name": "2",
+      "points": 5,
+      "experience": 145,
+      "seasonExperience": 0,
+      "avatarUrl": null,
+      "avatarColor": "green"
+    },
+    {
+      "id": 5,
+      "name": "3",
+      "points": 10,
+      "experience": 150,
+      "seasonExperience": 0,
+      "avatarUrl": null,
+      "avatarColor": "indigo"
+    },
+    {
+      "id": 6,
+      "name": "4",
+      "points": 7,
+      "experience": 833,
+      "seasonExperience": 0,
+      "avatarUrl": null,
+      "avatarColor": "yellow"
+    }
+  ],
+  "rewards": [],
+  "benefits": [],
+  "history": [
+    {
+      "memberId": 3,
+      "memberName": "1",
+      "type": "add",
+      "points": 5,
+      "reason": "获得5积分",
+      "timestamp": "2025-12-04T05:21:52.704Z"
+    },
+    {
+      "memberId": 3,
+      "memberName": "1",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:21:53.229Z"
+    },
+    {
+      "memberId": 3,
+      "memberName": "1",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:21:53.830Z"
+    },
+    {
+      "memberId": 3,
+      "memberName": "1",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:03.517Z"
+    },
+    {
+      "memberId": 3,
+      "memberName": "1",
+      "type": "add",
+      "points": 5,
+      "reason": "获得5积分",
+      "timestamp": "2025-12-04T05:22:04.809Z"
+    },
+    {
+      "memberId": 3,
+      "memberName": "1",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:05.041Z"
+    },
+    {
+      "memberId": 3,
+      "memberName": "1",
+      "type": "deduct",
+      "points": -5,
+      "reason": "扣除5积分",
+      "timestamp": "2025-12-04T05:22:08.544Z"
+    },
+    {
+      "memberId": 3,
+      "memberName": "1",
+      "type": "deduct",
+      "points": -5,
+      "reason": "扣除5积分",
+      "timestamp": "2025-12-04T05:22:09.010Z"
+    },
+    {
+      "memberId": 3,
+      "memberName": "1",
+      "type": "deduct",
+      "points": -5,
+      "reason": "扣除5积分",
+      "timestamp": "2025-12-04T05:22:09.126Z"
+    },
+    {
+      "memberId": 3,
+      "memberName": "1",
+      "type": "deduct",
+      "points": -5,
+      "reason": "扣除5积分",
+      "timestamp": "2025-12-04T05:22:11.014Z"
+    },
+    {
+      "memberId": 3,
+      "memberName": "1",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:22:12.103Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "add",
+      "points": 5,
+      "reason": "获得5积分",
+      "timestamp": "2025-12-04T05:22:19.005Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:19.897Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "deduct",
+      "points": -5,
+      "reason": "扣除5积分",
+      "timestamp": "2025-12-04T05:22:20.473Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "deduct",
+      "points": -5,
+      "reason": "扣除5积分",
+      "timestamp": "2025-12-04T05:22:21.016Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:21.506Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:22:22.048Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "add",
+      "points": 5,
+      "reason": "获得5积分",
+      "timestamp": "2025-12-04T05:22:22.632Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:22:23.040Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "deduct",
+      "points": -5,
+      "reason": "扣除5积分",
+      "timestamp": "2025-12-04T05:22:23.516Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:24.432Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:22:24.966Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "add",
+      "points": 5,
+      "reason": "获得5积分",
+      "timestamp": "2025-12-04T05:22:25.824Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:26.199Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "add",
+      "points": 5,
+      "reason": "获得5积分",
+      "timestamp": "2025-12-04T05:22:34.830Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:22:36.128Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "deduct",
+      "points": -5,
+      "reason": "扣除5积分",
+      "timestamp": "2025-12-04T05:22:37.462Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:38.454Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "deduct",
+      "points": -5,
+      "reason": "扣除5积分",
+      "timestamp": "2025-12-04T05:22:41.105Z"
+    },
+    {
+      "memberId": 4,
+      "memberName": "2",
+      "type": "deduct",
+      "points": -5,
+      "reason": "扣除5积分",
+      "timestamp": "2025-12-04T05:22:44.433Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:52.751Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:22:53.285Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:53.801Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:22:54.669Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:55.652Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:22:56.420Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:57.270Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:22:58.120Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:58.686Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:22:59.195Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:22:59.653Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:23:00.836Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:02.654Z"
+    },
+    {
+      "memberId": 5,
+      "memberName": "3",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:23:03.505Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 5,
+      "reason": "获得5积分",
+      "timestamp": "2025-12-04T05:23:15.517Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 5,
+      "reason": "获得5积分",
+      "timestamp": "2025-12-04T05:23:17.295Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 5,
+      "reason": "获得5积分",
+      "timestamp": "2025-12-04T05:23:18.387Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 5,
+      "reason": "获得5积分",
+      "timestamp": "2025-12-04T05:23:19.354Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:20.511Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:21.573Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:22.613Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:23.514Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:24.431Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:25.448Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:26.423Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:27.298Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:28.199Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:28.958Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:29.666Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:30.400Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:31.142Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:31.792Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:32.393Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:32.976Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:33.551Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:34.060Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:34.668Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:35.277Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:35.793Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:36.310Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:36.820Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:37.436Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:38.078Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:38.712Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:39.312Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:39.921Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:40.486Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:41.096Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:41.619Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:42.154Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:42.729Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:43.296Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:43.855Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:44.387Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:44.973Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:45.513Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:46.063Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "add",
+      "points": 10,
+      "reason": "获得10积分",
+      "timestamp": "2025-12-04T05:23:47.039Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "deduct",
+      "points": -10,
+      "reason": "扣除10积分",
+      "timestamp": "2025-12-04T05:23:47.605Z"
+    },
+    {
+      "memberId": 6,
+      "memberName": "4",
+      "type": "deduct",
+      "points": -403,
+      "reason": "自定义扣分",
+      "timestamp": "2025-12-04T05:24:21.728Z"
+    }
+  ],
+  "nextMemberId": 7,
+  "nextBenefitId": 1,
+  "isFirstTime": false,
+  "quickActions": [
+    {
+      "points": 5,
+      "label": "+5",
+      "type": "add"
+    },
+    {
+      "points": 10,
+      "label": "+10",
+      "type": "add"
+    },
+    {
+      "points": 5,
+      "label": "-5",
+      "type": "deduct"
+    },
+    {
+      "points": 10,
+      "label": "-10",
+      "type": "deduct"
+    }
+  ],
+  "defaultAvatarColors": [
+    "blue",
+    "green",
+    "yellow",
+    "red",
+    "purple",
+    "pink",
+    "indigo",
+    "gray",
+    "teal",
+    "cyan",
+    "orange",
+    "amber",
+    "lime",
+    "emerald",
+    "violet",
+    "fuchsia"
+  ],
+  "lastDecayDate": null,
+  "season": {
+    "isActive": false,
+    "startTime": null,
+    "endTime": null,
+    "durationDays": 30,
+    "leaderboard": [
+      {
+        "memberId": 3,
+        "experience": 0
+      },
+      {
+        "memberId": 4,
+        "experience": 0
+      },
+      {
+        "memberId": 5,
+        "experience": 0
+      },
+      {
+        "memberId": 6,
+        "experience": 0
+      }
+    ]
+  }
+}
