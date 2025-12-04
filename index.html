@@ -552,6 +552,10 @@
             <button class="refresh-btn" id="refreshFiles">
                 🔄 刷新文件列表
             </button>
+            <!-- 在“刷新按钮”代码的后面，添加以下代码 -->
+            <button class="refresh-btn" id="requestUpload" style="margin-left: 10px;">
+                📤 提交文件上传请求
+            </button>
             
             <div class="files-container">
                 <div id="fileListContainer">
@@ -811,6 +815,24 @@
                     deleteRequestStatus.style.display = 'none';
                 }, 5000);
             }
+            // ==================== 添加上传请求功能 ====================
+const requestUploadBtn = document.getElementById('requestUpload');
+if (requestUploadBtn) {
+    requestUploadBtn.addEventListener('click', function() {
+        // 引导用户填写上传请求
+        const issueTitle = `文件上传请求`;
+        const issueBody = `**我想上传的文件描述：**\n（请详细说明文件名、格式、用途等）\n\n**文件下载链接（可选）：**\n（如果文件已在网盘，可在此粘贴链接）\n\n---\n*提交时间：${new Date().toLocaleString('zh-CN')}*`;
+        const issueUrl = `https://github.com/wddjcs/WDDJCS.github.io/issues/new?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(issueBody)}`;
+        
+        // 在新窗口打开GitHub Issues页面
+        window.open(issueUrl, '_blank');
+        
+        // 在页面上给出提示（复用之前删除请求的状态提示）
+        if (window.showDeleteRequestStatus) {
+            showDeleteRequestStatus('请在打开的GitHub页面中提交上传请求，管理员会尽快处理。', 'success');
+        }
+    });
+}
             
             // 渲染文件列表
             function renderFileList(files) {
