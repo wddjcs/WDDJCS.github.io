@@ -870,6 +870,37 @@
                                 experience: member.seasonExperience
                             }));
                         }
+                        
+                        // 检查是否有旧的快速操作数据（5和10的），如果是则更新为1和2
+                        const hasOldQuickActions = () => {
+                            if (!appData.quickActions || appData.quickActions.length < 4) return false;
+                            
+                            // 检查是否有包含5或10的快速操作
+                            const hasOldValues = appData.quickActions.some(action => 
+                                action.points === 5 || action.points === 10
+                            );
+                            
+                            // 检查是否有旧的标签
+                            const hasOldLabels = appData.quickActions.some(action => 
+                                action.label === "+5" || action.label === "+10" || 
+                                action.label === "-5" || action.label === "-10"
+                            );
+                            
+                            return hasOldValues || hasOldLabels;
+                        };
+                        
+                        // 如果检测到旧的快速操作，更新为新的
+                        if (hasOldQuickActions()) {
+                            console.log("检测到旧的快速操作数据，正在更新为1和2...");
+                            appData.quickActions = [
+                                { points: 1, label: "+1", type: "add" },
+                                { points: 2, label: "+2", type: "add" },
+                                { points: 1, label: "-1", type: "deduct" },
+                                { points: 2, label: "-2", type: "deduct" }
+                            ];
+                            saveData();
+                            console.log("快速操作已更新为1和2");
+                        }
                     }
                 } catch (e) {
                     console.error('Failed to parse saved data', e);
@@ -2281,4 +2312,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
