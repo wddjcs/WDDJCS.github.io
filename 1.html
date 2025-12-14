@@ -1,0 +1,134 @@
+// 初始化数据
+        let appData = {
+            members: [],
+            rewards: [],
+            benefits: [],
+            history: [],
+            nextMemberId: 1,
+            nextBenefitId: 1,
+            isFirstTime: true,
+            quickActions: [
+                { points: 1, label: "+1", type: "add" },
+                { points: 2, label: "+2", type: "add" },
+                { points: 1, label: "-1", type: "deduct" },
+                { points: 2, label: "-2", type: "deduct" }
+            ],
+            defaultAvatarColors: [
+                'blue', 'green', 'yellow', 'red',
+                'purple', 'pink', 'indigo', 'gray',
+                'teal', 'cyan', 'orange', 'amber',
+                'lime', 'emerald', 'violet', 'fuchsia'
+            ],
+            lastDecayDate: null,
+            // 赛季相关数据
+            season: {
+                isActive: false,
+                startTime: null,
+                endTime: null,
+                durationDays: 30,
+                leaderboard: [] // 存储本赛季经验排行 {memberId, experience}
+            }
+        };
+
+        // ...（其他代码保持不变）...
+
+        // 从本地存储加载数据
+        function loadData() {
+            const savedData = localStorage.getItem('familyPointsData');
+            if (savedData) {
+                try {
+                    const parsedData = JSON.parse(savedData);
+                    // 检查是否是第一次使用
+                    if (parsedData.isFirstTime === undefined) {
+                        // 第一次使用，初始化数据
+                        initializeDefaultData();
+                    } else {
+                        appData = parsedData;
+                        appData.isFirstTime = false;
+                        
+                        // 确保成员有seasonExperience字段
+                        appData.members.forEach(member => {
+                            if (member.seasonExperience === undefined) {
+                                member.seasonExperience = 0;
+                            }
+                            if (member.experience === undefined) {
+                                member.experience = 0;
+                            }
+                        });
+                        
+                        // 初始化赛季排行榜
+                        if (!appData.season.leaderboard || appData.season.leaderboard.length === 0) {
+                            appData.season.leaderboard = appData.members.map(member => ({
+                                memberId: member.id,
+                                experience: member.seasonExperience
+                            }));
+                        }
+                        
+                        // 检查是否有旧的快速操作数据（5和10的），如果是则更新为1和2
+                        const oldQuickActions = [
+                            { points: 5, label: "+5", type: "add" },
+                            { points: 10, label: "+10", type: "add" },
+                            { points: 5, label: "-5", type: "deduct" },
+                            { points: 10, label: "-10", type: "deduct" }
+                        ];
+                        
+                        // 检查是否匹配旧的快速操作
+                        const isOldQuickActions = JSON.stringify(appData.quickActions) === JSON.stringify(oldQuickActions);
+                        if (isOldQuickActions) {
+                            appData.quickActions = [
+                                { points: 1, label: "+1", type: "add" },
+                                { points: 2, label: "+2", type: "add" },
+                                { points: 1, label: "-1", type: "deduct" },
+                                { points: 2, label: "-2", type: "deduct" }
+                            ];
+                            console.log("检测到旧的快速操作，已更新为1和2");
+                        }
+                    }
+                } catch (e) {
+                    console.error('Failed to parse saved data', e);
+                    initializeDefaultData();
+                }
+            } else {
+                initializeDefaultData();
+            }
+            renderAll();
+            
+            // 启动赛季倒计时
+            if (appData.season.isActive) {
+                startSeasonCountdown();
+            }
+        }
+
+        // 初始化默认数据
+        function initializeDefaultData() {
+            appData = {
+                members: [],
+                rewards: [],
+                benefits: [],
+                history: [],
+                nextMemberId: 1,
+                nextBenefitId: 1,
+                isFirstTime: false,
+                quickActions: [
+                    { points: 1, label: "+1", type: "add" },
+                    { points: 2, label: "+2", type: "add" },
+                    { points: 1, label: "-1", type: "deduct" },
+                    { points: 2, label: "-2", type: "deduct" }
+                ],
+                defaultAvatarColors: [
+                    'blue', 'green', 'yellow', 'red',
+                    'purple', 'pink', 'indigo', 'gray',
+                    'teal', 'cyan', 'orange', 'amber',
+                    'lime', 'emerald', 'violet', 'fuchsia'
+                ],
+                lastDecayDate: null,
+                season: {
+                    isActive: false,
+                    startTime: null,
+                    endTime: null,
+                    durationDays: 30,
+                    leaderboard: []
+                }
+            };
+            saveData();
+        }
